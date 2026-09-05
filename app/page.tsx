@@ -1,120 +1,510 @@
-"use client";
+'use client';
+import { useState, type PointerEvent, type CSSProperties } from 'react';
+import {
+  ArrowUpRight,
+  ArrowDown,
+  ArrowRight,
+  Plus,
+  Eye,
+  EyeOff,
+} from 'lucide-react';
+import { Switch } from '@/components/ui/switch';
+import {
+  Header,
+  Footer,
+  Motion,
+  CaseReader,
+  OutLink,
+} from '@/components/portfolio';
+import { papers, experiments } from './content';
 
-import { useEffect, useState, type CSSProperties, type ReactNode } from 'react';
-import { ArrowDown, ArrowUpRight, ArrowRight, Plus, X, Play } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from '@/components/ui/accordion';
-import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetDescription, SheetClose } from '@/components/ui/sheet';
-import { cases, chapters, papers, media, courses, experiments, writings } from './content';
-
-const LETTERS = Array.from('entender.');
-const orderedMedia = [...media].sort((a,b)=>{
-  const date=(x:typeof a)=>x.id==='4gQ3pW752EY' ? '20240518' : x.date.split('.').reverse().join('');
-  return date(b).localeCompare(date(a));
-});
-
-function OutLink({href,children,className=''}:{href:string;children:ReactNode;className?:string}) {
-  return <a className={className} href={href} target="_blank" rel="noopener noreferrer">{children}<ArrowUpRight size={16} aria-hidden="true"/></a>;
+function tilt(event: PointerEvent<HTMLElement>) {
+  if (
+    event.pointerType !== 'mouse' ||
+    window.matchMedia('(prefers-reduced-motion: reduce)').matches
+  )
+    return;
+  const box = event.currentTarget.getBoundingClientRect();
+  event.currentTarget.style.setProperty(
+    '--px',
+    String(((event.clientX - box.left) / box.width) * 2 - 1),
+  );
+  event.currentTarget.style.setProperty(
+    '--py',
+    String(((event.clientY - box.top) / box.height) * 2 - 1),
+  );
 }
-function SectionLabel({number,title,note}:{number:string;title:string;note:string}) {
-  return <div className="section-label"><span>{number} / {title}</span><span>{note}</span></div>;
+function resetTilt(event: PointerEvent<HTMLElement>) {
+  event.currentTarget.style.setProperty('--px', '0');
+  event.currentTarget.style.setProperty('--py', '0');
 }
 
 export default function Home() {
-  const [encoded,setEncoded]=useState(false);
-  const [inspecting,setInspecting]=useState(false);
-  const [selectedCase,setSelectedCase]=useState(cases[0]);
-  const [caseOpen,setCaseOpen]=useState(false);
-  const [activeChapter,setActiveChapter]=useState(0);
-  const openCase=(id:string)=>{setSelectedCase(cases.find(item=>item.id===id)||cases[0]);setCaseOpen(true);};
-
-  useEffect(()=>{
-    const storyObserver=new IntersectionObserver(entries=>{
-      for(const entry of entries) if(entry.isIntersecting) setActiveChapter(Number((entry.target as HTMLElement).dataset.storyChapter));
-    },{rootMargin:'-15% 0px -55% 0px',threshold:0});
-    document.querySelectorAll('[data-story-chapter]').forEach(el=>storyObserver.observe(el));
-    let revealObserver:IntersectionObserver|undefined;
-    if(!window.matchMedia('(prefers-reduced-motion: reduce)').matches){
-      document.documentElement.classList.add('motion-ready');
-      revealObserver=new IntersectionObserver(entries=>{
-        for(const entry of entries) if(entry.isIntersecting){entry.target.classList.add('is-visible');revealObserver?.unobserve(entry.target);}
-      },{threshold:0.08});
-      document.querySelectorAll('[data-reveal]').forEach(el=>revealObserver?.observe(el));
-    }
-    let raf=0;
-    const updateProgress=()=>{
-      cancelAnimationFrame(raf);
-      raf=requestAnimationFrame(()=>{
-        const length=document.documentElement.scrollHeight-window.innerHeight;
-        document.documentElement.style.setProperty('--reading-progress',String(length>0 ? Math.min(1,Math.max(0,window.scrollY/length)) : 0));
-      });
-    };
-    window.addEventListener('scroll',updateProgress,{passive:true});
-    window.addEventListener('resize',updateProgress);
-    updateProgress();
-    return ()=>{storyObserver.disconnect();revealObserver?.disconnect();document.documentElement.classList.remove('motion-ready');cancelAnimationFrame(raf);window.removeEventListener('scroll',updateProgress);window.removeEventListener('resize',updateProgress);};
-  },[]);
-
-  return <>
-    <div className="reading-progress" aria-hidden="true"/>
-    <a className="skip-link" href="#contenido">Saltar al contenido</a>
-    <header className="site-header wrap">
-      <Button variant="ghost" className={`wordmark ${encoded?'wordmark-encoded':''}`} onClick={()=>setEncoded(!encoded)} aria-label={encoded?'Mostrar el alias luijait':'Mostrar luijait en hexadecimal'} aria-pressed={encoded}>{encoded?'0x6c75696a616974':<>luijait<span>_</span></>}</Button>
-      <nav aria-label="Principal"><a href="#trabajo">Trabajo</a><a href="#historia">Mi historia</a><a href="#investigacion">Papers</a><a href="#conversaciones">Conversaciones</a><a href="#contacto">Hablemos <ArrowUpRight size={15}/></a></nav>
-    </header>
-    <main id="contenido">
-      <section className="hero wrap" aria-labelledby="hero-title">
-        <div className="hero-meta"><span className="eyebrow">Luis Javier Navarrete Lozano</span><span className="eyebrow status"><i/> Actualmente en TryHackMe</span></div>
-        <h1 id="hero-title" aria-label="Hace falta entender.">Hace falta<br/><em className={`word-inspection ${inspecting?'is-inspecting':''}`} aria-hidden="true">{LETTERS.map((letter,index)=><span className={`letter letter-${letter==='.'?'dot':letter}`} key={index} style={{'--letter-index':index} as CSSProperties}><span className="letter-main">{letter}</span><span className="letter-code">{letter.charCodeAt(0).toString(16)}</span></span>)}</em><span className="hero-mark" aria-hidden="true">↳</span></h1>
-        <div className="hero-control"><Button variant="ghost" className="inspection-toggle" onClick={()=>setInspecting(!inspecting)} aria-pressed={inspecting}><span aria-hidden="true">[{inspecting?'−':'+'}]</span>{inspecting?'Volver a las letras':'Ver lo que hay dentro'}</Button><span className="encoding-note" aria-live="polite">{inspecting?'entender. → bytes en hexadecimal':'Una misma cosa. Otra forma de mirarla.'}</span></div>
-        <div className="hero-bottom"><div className="hero-intro"><p>Soy Luija. Investigo inteligencia artificial y ciberseguridad en TryHackMe. Me gusta entender cómo funcionan las cosas y convertir esa curiosidad en algo que se pueda usar.</p><a className="text-link" href="#trabajo">Explorar mi trabajo <ArrowDown size={17}/></a></div><div className="hero-now"><span className="eyebrow">Actualmente</span><p className="current-company"><a href="https://tryhackme.com/" target="_blank" rel="noopener noreferrer">TryHackMe ↗</a></p><span className="current-role">AI engineer · NoScope</span></div><figure className="portrait"><img src="/luija.png" alt="Luis Javier Navarrete Lozano" width={460} height={460} fetchPriority="high"/><figcaption>Luija, al otro lado de la pantalla.</figcaption></figure></div>
-      </section>
-
-      <section id="trabajo" className="section wrap" aria-labelledby="work-title">
-        <SectionLabel number="01" title="Trabajo elegido" note="De una pregunta a algo que funciona"/>
-        <article className="featured-case" data-reveal>
-          <div className="featured-work"><span className="eyebrow">Mi trabajo actual · 2026</span><h2 id="work-title">Ahora, en<br/><em>TryHackMe.</em></h2><p>IA y ciberseguridad con una mirada de producto. Trabajo como AI engineer en NoScope, dentro del entorno de TryHackMe.</p><Button variant="ghost" className="open-case" onClick={()=>openCase('noscope')} aria-label="Conocer mi trabajo actual en TryHackMe y NoScope">Mi etapa actual <Plus size={18}/></Button><span className="work-credit">TryHackMe / NoScope · Tecnología, equipos y producto</span></div>
-          <div className="present-spine"><div className="spine-top"><span>TRYHACKME / NOSCOPE</span><span>AHORA</span></div><span className="spine-title" aria-hidden="true">AI<span>↗</span></span><div className="spine-questions"><span>Inteligencia artificial</span><span>Ciberseguridad</span><span>Producto</span></div><OutLink href="https://www.noscope.com/company" className="spine-link">El equipo del que formo parte</OutLink></div>
-        </article>
-        <div className="project-grid">{cases.filter(item=>item.id!=='noscope').map((item,index)=><article className="project" key={item.id} data-reveal style={{'--reveal-delay':`${index*70}ms`} as CSSProperties}><div className="project-meta"><span>{item.period}</span><span>0{index+2}</span></div><h3>{item.name}</h3><span className="project-category">{item.category}</span><p>{item.intro}</p><Button variant="ghost" className="open-case" onClick={()=>openCase(item.id)} aria-label={`Mirar dentro de ${item.name}`}>Mirar dentro <Plus size={18}/></Button></article>)}</div>
-      </section>
-
-      <section id="historia" className="section story-section wrap" aria-labelledby="story-title">
-        <SectionLabel number="02" title="Mi historia" note="Origen: Villanueva del Arzobispo, Jaén"/>
-        <div className="story-heading" data-reveal><h2 id="story-title">La curiosidad<br/><em>viene de antes.</em></h2><p>No empecé queriendo escribir una biografía.<br/>Empecé queriendo saber qué había dentro.</p></div>
-        <div className="story-layout"><aside className="story-index" aria-label="Capítulos de mi historia"><span className="eyebrow">El recorrido</span>{chapters.map((chapter,index)=><a key={chapter.era} href={`#capitulo-${index}`} className={activeChapter===index?'active':''} aria-current={activeChapter===index?'location':undefined}><span className="chapter-dot"/><span>{chapter.era}</span><span className="chapter-number">0{index+1}</span></a>)}<div className="story-index-note">Una historia hecha de personas,<br/>preguntas y cosas por aprender.</div></aside>
-          <div className="story-chapters">{chapters.map((chapter,index)=><article className="story-chapter" id={`capitulo-${index}`} data-story-chapter={index} key={chapter.era}><span className="eyebrow chapter-era">0{index+1} / {chapter.era}</span><h3>{chapter.title}</h3>{chapter.paragraphs.map(text=><p key={text}>{text}</p>)}<OutLink href={chapter.url} className="source-link">{chapter.source}</OutLink></article>)}
-            <Accordion className="training-accordion"><AccordionItem value="formacion"><AccordionTrigger className="training-trigger"><span>La formación que acompaña el camino<small>Redes, Python, Linux y seguridad</small></span></AccordionTrigger><AccordionContent className="training-content"><p>Cursos y credenciales de estudiante documentados. Los cursos CCNA y Programming Essentials in Python se distinguen de sus correspondientes exámenes profesionales.</p><div className="course-list">{courses.map(course=><OutLink key={course.title} href={course.url} className="course"><span><strong>{course.title}</strong><small>{course.issuer} · {course.date}</small></span></OutLink>)}</div></AccordionContent></AccordionItem></Accordion>
+  const [protectedView, setProtectedView] = useState(true);
+  return (
+    <>
+      <Motion />
+      <Header />
+      <main id="contenido">
+        <section className="hero-poster shell">
+          <div className="hero-topline">
+            <span className="kicker">Luis Javier Navarrete Lozano</span>
+            <a className="current-badge" href="#tryhackme">
+              <i /> Ahora en <strong>TryHackMe</strong>
+              <ArrowUpRight size={16} />
+            </a>
           </div>
-        </div>
-      </section>
+          <h1 className="hero-name" aria-label="Luijait">
+            {'luijait.'.split('').map((letter, index) => (
+              <span key={index} style={{ '--index': index } as CSSProperties}>
+                {letter}
+              </span>
+            ))}
+          </h1>
+          <div
+            className="hero-object-wrap"
+            onPointerMove={tilt}
+            onPointerLeave={resetTilt}
+          >
+            <div className="hero-object">
+              <img
+                src="/hero-cartridge.png"
+                alt="Render conceptual de un cartucho de videojuegos abierto en cuatro capas: una metáfora de la curiosidad por entender qué hay dentro."
+                width={1254}
+                height={1254}
+                fetchPriority="high"
+              />
+            </div>
+            <a
+              className="object-point point-origin"
+              href="/historia"
+              aria-label="Mi historia: la curiosidad"
+            >
+              <span>01</span>
+              <span>La curiosidad</span>
+            </a>
+            <a
+              className="object-point point-research"
+              href="/investigacion"
+              aria-label="Explorar mi investigación"
+            >
+              <span>02</span>
+              <span>La investigación</span>
+            </a>
+            <a
+              className="object-point point-work"
+              href="#trabajo"
+              aria-label="Explorar lo que construyo"
+            >
+              <span>03</span>
+              <span>Lo que construyo</span>
+            </a>
+          </div>
+          <div className="hero-copy">
+            <p>
+              Investigo IA.
+              <br />
+              Construyo herramientas.
+              <br />
+              <span>Me gusta mirar dentro.</span>
+            </p>
+            <div className="hero-current">
+              <span className="kicker">AI engineer</span>
+              <strong>
+                TryHackMe <span>/ NoScope</span>
+              </strong>
+            </div>
+            <a className="round-link" href="#trabajo">
+              <span className="round-arrow">
+                <ArrowDown size={22} />
+              </span>
+              <span>Explorar el trabajo</span>
+            </a>
+          </div>
+          <div className="hero-caption">
+            <span className="kicker">
+              Todo empezó con una pequeña pantalla.
+            </span>
+            <a href="/historia">
+              Esta es mi historia <ArrowUpRight size={16} />
+            </a>
+          </div>
+        </section>
 
-      <section id="investigacion" className="papers-section" aria-labelledby="papers-title"><div className="wrap">
-        <SectionLabel number="03" title="Investigación publicada" note="7 preprints · Coautoría · arXiv"/>
-        <div className="papers-heading" data-reveal><h2 id="papers-title">Las preguntas<br/><em>también se publican.</em></h2><p>Siete trabajos conectados: del marco inicial a cómo formar, evaluar y pensar con estos sistemas.</p></div>
-        <Accordion className="papers-list">{papers.map((paper,index)=><AccordionItem key={paper.id} value={paper.id} className="paper-item"><AccordionTrigger className="paper-trigger"><span className="paper-index">0{index+1}</span><span className="paper-name"><strong>{paper.short}</strong><span>{paper.question}</span></span><span className="paper-date">{paper.date}</span></AccordionTrigger><AccordionContent className="paper-content"><div className="paper-detail"><span className="eyebrow">{paper.tag} · En coautoría</span><h3>{paper.title}</h3><p>{paper.description}</p><OutLink href={`https://arxiv.org/abs/${paper.id}`} className="text-link">Leer el paper en arXiv</OutLink></div></AccordionContent></AccordionItem>)}</Accordion>
-        <div className="research-note"><span className="eyebrow">Más allá del preprint</span><p>CAI cuenta también con una versión vinculada al taller AICS 2026, asociado a AAAI. Una misma investigación que continúa la conversación en otros espacios.</p><OutLink href="https://aics.site/" className="source-link">AICS 2026</OutLink></div>
-      </div></section>
+        <section
+          className="work-section shell"
+          id="trabajo"
+          aria-labelledby="work-title"
+        >
+          <div className="section-heading" data-enter>
+            <div>
+              <span className="kicker">01 / Trabajo seleccionado</span>
+              <h2 id="work-title">
+                De 0dAI
+                <br />
+                <em>a TryHackMe.</em>
+              </h2>
+            </div>
+            <p>
+              Investigación, producto
+              <br />
+              y proyectos por mi cuenta.
+            </p>
+          </div>
+          <div className="project-stack">
+            <article
+              className="stack-card thm-card"
+              id="tryhackme"
+              style={{ '--stack': 0 } as CSSProperties}
+            >
+              <div className="card-top">
+                <span className="card-status">
+                  <i /> Mi trabajo actual
+                </span>
+                <span className="kicker">La etapa actual</span>
+              </div>
+              <div className="thm-layout">
+                <div>
+                  <h3 className="thm-title">
+                    TRY
+                    <br />
+                    HACK
+                    <br />
+                    <span>ME.</span>
+                  </h3>
+                </div>
+                <div className="thm-description">
+                  <div className="role-label">
+                    <span>AI</span>
+                    <span>ENGINEER</span>
+                  </div>
+                  <p>
+                    Investigo y desarrollo IA aplicada a ciberseguridad con el
+                    equipo de NoScope, en TryHackMe.
+                  </p>
+                  <CaseReader caseId="noscope">
+                    Mi etapa actual <ArrowUpRight size={20} />
+                  </CaseReader>
+                  <OutLink
+                    href="https://www.noscope.com/company"
+                    className="card-source"
+                  >
+                    Conocer al equipo
+                  </OutLink>
+                </div>
+              </div>
+              <div className="card-bottom">
+                <span>TryHackMe / NoScope</span>
+                <span>Investigación · Producto · Ciberseguridad</span>
+                <span>01 / 04</span>
+              </div>
+            </article>
+            <article
+              className="stack-card cai-card"
+              style={{ '--stack': 1 } as CSSProperties}
+              onPointerMove={tilt}
+              onPointerLeave={resetTilt}
+            >
+              <div className="card-top">
+                <span className="kicker">Investigación en Alias Robotics</span>
+                <span className="kicker">2025—2026</span>
+              </div>
+              <div className="cai-layout">
+                <div className="project-copy">
+                  <span className="project-overline">CAI / CAIBench</span>
+                  <h3>
+                    Construir.
+                    <br />Y aprender
+                    <br />
+                    <em>a medir.</em>
+                  </h3>
+                  <p>
+                    Una infraestructura abierta y siete trabajos en coautoría
+                    para investigar IA aplicada a ciberseguridad.
+                  </p>
+                  <CaseReader caseId="cai">
+                    Abrir el caso <Plus size={20} />
+                  </CaseReader>
+                </div>
+                <div
+                  className="paper-display"
+                  aria-label="Una selección de los papers publicados"
+                >
+                  {[papers[0], papers[2], papers[1]].map((paper, index) => (
+                    <a
+                      className={`paper-tile paper-tile-${index}`}
+                      href={`/investigacion#paper-${paper.id}`}
+                      key={paper.id}
+                    >
+                      <div className="paper-tile-meta">
+                        <span>RESEARCH PAPER</span>
+                        <span>0{index + 1}</span>
+                      </div>
+                      <span className="paper-tile-title">{paper.short}</span>
+                      <p>{paper.question}</p>
+                      <div className="paper-tile-bottom">
+                        <span>Coautor · arXiv</span>
+                        <ArrowUpRight size={20} />
+                      </div>
+                    </a>
+                  ))}
+                </div>
+              </div>
+              <div className="card-bottom">
+                <span>CAI · CAIBench · Fluency</span>
+                <a href="/investigacion">Explorar las 7 publicaciones ↗</a>
+                <span>02 / 04</span>
+              </div>
+            </article>
+            <article
+              className="stack-card odai-card"
+              style={{ '--stack': 2 } as CSSProperties}
+            >
+              <div className="card-top">
+                <span className="kicker">Cofundador y CTO · 0dAI</span>
+                <span className="kicker">2023—2024</span>
+              </div>
+              <div className="odai-layout">
+                <div className="project-copy">
+                  <span className="project-overline">El primer producto</span>
+                  <h3>
+                    Una idea.
+                    <br />
+                    <em>Luego, usuarios.</em>
+                  </h3>
+                  <p>
+                    Una necesidad en Omega se convirtió, con Jon y el equipo, en
+                    un prototipo y un servicio.
+                  </p>
+                  <CaseReader caseId="0dai">
+                    Mirar dentro <Plus size={20} />
+                  </CaseReader>
+                </div>
+                <div className="odai-process">
+                  <span className="odai-mark">
+                    0d<span>AI</span>
+                  </span>
+                  <ol aria-label="El recorrido de 0dAI">
+                    <li>
+                      <span>01</span>
+                      <strong>Una necesidad</strong>
+                      <ArrowDown size={16} />
+                    </li>
+                    <li>
+                      <span>02</span>
+                      <strong>Un prototipo</strong>
+                      <ArrowDown size={16} />
+                    </li>
+                    <li>
+                      <span>03</span>
+                      <strong>Personas usándolo</strong>
+                      <ArrowUpRight size={16} />
+                    </li>
+                  </ol>
+                </div>
+              </div>
+              <div className="card-bottom">
+                <span>De la propuesta al uso real</span>
+                <span>Iniciativa personal · Construcción compartida</span>
+                <span>03 / 04</span>
+              </div>
+            </article>
+            <article
+              className="stack-card blurtain-card"
+              style={{ '--stack': 3 } as CSSProperties}
+            >
+              <div className="card-top">
+                <span className="kicker">Blurtain · Proyecto personal</span>
+                <span className="kicker">macOS · 2026</span>
+              </div>
+              <div className="blurtain-layout">
+                <div className="project-copy">
+                  <span className="project-overline">Una pequeña solución</span>
+                  <h3>
+                    Enseña
+                    <br />
+                    <em>lo que quieres.</em>
+                  </h3>
+                  <p>
+                    Una aplicación para compartir pantalla sin dejarlo todo a la
+                    vista.
+                  </p>
+                  <CaseReader caseId="blurtain">
+                    Explorar Blurtain <ArrowUpRight size={20} />
+                  </CaseReader>
+                </div>
+                <div className="privacy-demo">
+                  <div className="demo-bar">
+                    <span>Demostración del concepto</span>
+                    <span>
+                      {protectedView ? <EyeOff size={17} /> : <Eye size={17} />}
+                    </span>
+                  </div>
+                  <div className="demo-content">
+                    <span className="kicker">Lo que estás compartiendo</span>
+                    <h4>
+                      Una buena idea
+                      <br />
+                      merece verse.
+                    </h4>
+                    <div
+                      className={`private-note ${protectedView ? 'protected' : ''}`}
+                    >
+                      <span>Y este detalle</span>
+                      <strong>prefieres reservarlo.</strong>
+                    </div>
+                  </div>
+                  <label className="demo-control" htmlFor="privacy-control">
+                    <span>Proteger el detalle</span>
+                    <Switch
+                      id="privacy-control"
+                      checked={protectedView}
+                      onCheckedChange={setProtectedView}
+                      className="privacy-switch"
+                    />
+                  </label>
+                </div>
+              </div>
+              <div className="card-bottom">
+                <span>Diseñada para una molestia cotidiana</span>
+                <OutLink href="https://github.com/luijait/blurtain">
+                  Ver el proyecto
+                </OutLink>
+                <span>04 / 04</span>
+              </div>
+            </article>
+          </div>
+        </section>
 
-      <section id="conversaciones" className="section media-section wrap" aria-labelledby="media-title">
-        <SectionLabel number="04" title="Conversaciones y charlas" note="2023—2026"/>
-        <div className="media-heading" data-reveal><h2 id="media-title">Con tiempo<br/><em>para contarlo.</em></h2><p>El contexto que no cabe en una bio.<br/>Ideas, comienzos, desacuerdos y aprendizajes.</p></div>
-        <div className="media-list">{orderedMedia.map((episode,index)=><a key={episode.id} className={`media-row ${index===0?'latest-episode':''}`} href={`https://www.youtube.com/watch?v=${episode.id}${episode.start?'&t='+episode.start+'s':''}`} target="_blank" rel="noopener noreferrer" title={episode.note||`${episode.show} · ${episode.date}`}><span className="media-date">{episode.date}</span><span className="media-copy"><span>{episode.show}{index===0&&<span className="latest-label">Más reciente</span>}</span><strong>{episode.topic}</strong>{episode.note&&<small>{episode.note}</small>}</span><span className="media-duration">{episode.duration}</span><span className="play-link"><Play size={16} aria-hidden="true"/><span className="sr-only">Abrir conversación</span></span></a>)}</div>
-        <div className="talks-note"><span className="eyebrow">También nos hemos encontrado en</span><div><OutLink href="https://aibirras.org/events">AiBirras</OutLink><OutLink href="https://github.com/luijait/0dAI-Morteruelo-CON">Morteruelo 2024</OutLink><OutLink href="https://www.iesvirgendelcarmen.com/charla-pentesting-curso-de-especializacion-en-ciberseguridad-y-asir/">IES Virgen del Carmen</OutLink><OutLink href="https://www.gradobliss.com/profesionales/expert-board">Expert Board · BLISS</OutLink></div></div>
-      </section>
+        <section className="person-section shell" data-enter>
+          <div className="person-photo">
+            <img
+              src="/luija.png"
+              alt="Luis Javier Navarrete Lozano"
+              width={460}
+              height={460}
+              loading="lazy"
+            />
+            <span className="photo-caption">Luija, al otro lado.</span>
+          </div>
+          <div className="person-copy">
+            <span className="kicker">02 / La persona detrás</span>
+            <h2>
+              «Hace falta
+              <br />
+              <em>entender.»</em>
+            </h2>
+            <p>
+              Soy Luija, de Villanueva del Arzobispo, Jaén. Empecé queriendo
+              hacer videojuegos. Por el camino llegaron Linux, las redes, la
+              ciberseguridad y la IA. Sigo mirando qué hay dentro.
+            </p>
+            <div className="person-links">
+              <a href="/historia" className="ink-link">
+                Leer mi historia <ArrowUpRight size={20} />
+              </a>
+              <OutLink
+                href="https://x.com/luijait_/status/2095907175721734495"
+                className="quote-source"
+              >
+                La frase, en X
+              </OutLink>
+            </div>
+          </div>
+          <span className="person-margin" aria-hidden="true">
+            JAÉN → CURIOSIDAD →
+          </span>
+        </section>
 
-      <section id="laboratorio" className="section lab-section wrap" aria-labelledby="lab-title">
-        <SectionLabel number="05" title="Fuera del guion" note="Ideas de distintas escalas"/>
-        <div className="lab-heading" data-reveal><div><h2 id="lab-title">No todo empieza<br/><em>con un paper.</em></h2><p>A veces empieza un fin de semana, con demasiadas pestañas abiertas y ganas de probar una idea.</p></div><span className="lab-aside">EN CONSTRUCCIÓN<br/>POR CURIOSIDAD<br/><span aria-hidden="true">↙</span></span></div>
-        <div className="experiment-list">{experiments.map((item,index)=><a key={item.name} href={item.url} target="_blank" rel="noopener noreferrer" className="experiment"><span className="experiment-number">[{String(index+1).padStart(2,'0')}]</span><span className="experiment-name"><strong>{item.name}</strong><small>{item.kind}</small></span><p>{item.text}</p><ArrowUpRight size={20} aria-hidden="true"/></a>)}</div>
-        <OutLink href="https://github.com/luijait" className="text-link">Seguir explorando en GitHub</OutLink>
-      </section>
+        <section className="research-door">
+          <div className="shell research-door-inner">
+            <a
+              href="/investigacion"
+              className="research-number"
+              aria-label="Explorar siete trabajos en coautoría"
+            >
+              07<span>↗</span>
+            </a>
+            <div>
+              <span className="kicker">03 / Investigación publicada</span>
+              <h2>
+                Las preguntas
+                <br />
+                <em>también se publican.</em>
+              </h2>
+              <p>
+                CAI, evaluación, formación, estrategia.
+                <br />
+                Siete trabajos conectados, en coautoría.
+              </p>
+              <a href="/investigacion" className="ink-link">
+                Entrar en la investigación <ArrowRight size={20} />
+              </a>
+            </div>
+          </div>
+        </section>
 
-      <section id="notas" className="section notes-section wrap" aria-labelledby="notes-title"><SectionLabel number="06" title="Por escrito" note="Explicar también ordena las ideas"/><div className="notes-layout"><h2 id="notes-title">Notas<br/><em>compartidas.</em></h2><div>{writings.map(item=><a className="writing" href={item.url} key={item.title} target="_blank" rel="noopener noreferrer"><span><small>{item.publisher} · {item.date}</small><strong>{item.title}</strong></span><ArrowUpRight size={20}/></a>)}</div></div></section>
+        <section className="lab-section shell" id="laboratorio">
+          <div className="section-heading" data-enter>
+            <div>
+              <span className="kicker">04 / Fuera del guion</span>
+              <h2>
+                Hay ideas que empiezan
+                <br />
+                <em>un fin de semana.</em>
+              </h2>
+            </div>
+            <span className="lab-stamp">
+              EN MARCHA
+              <br />
+              POR CURIOSIDAD ↙
+            </span>
+          </div>
+          <div className="lab-rows">
+            {experiments.map((item, index) => (
+              <a
+                href={item.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="lab-row"
+                key={item.name}
+              >
+                <span className="lab-number">0{index + 1}</span>
+                <span>
+                  <strong>{item.name}</strong>
+                  <small>{item.kind}</small>
+                </span>
+                <p>{item.text}</p>
+                <ArrowUpRight size={22} />
+              </a>
+            ))}
+          </div>
+        </section>
 
-      <footer id="contacto" className="contact wrap"><span className="eyebrow">07 / Sigamos la conversación</span><h2>¿Qué estás<br/><em>intentando entender?</em></h2><p className="contact-intro">Si estás investigando algo parecido, construyendo un producto o preparando una conversación interesante, podemos hablar.</p><div className="contact-links"><OutLink href="https://es.linkedin.com/in/luis-javier-navarrete-lozano-9187852b9">LinkedIn</OutLink><OutLink href="https://x.com/luijait_">X / @luijait_</OutLink></div><div className="footer-line"><span>© 2026 Luis Javier Navarrete Lozano</span><a href="https://x.com/luijait_/status/2095907175721734495" target="_blank" rel="noopener noreferrer">Hace falta entender. ↗</a><a href="#">Volver arriba ↑</a></div></footer>
-    </main>
-
-    <Sheet open={caseOpen} onOpenChange={setCaseOpen}><SheetContent className="case-sheet" showCloseButton={false}><div className="sheet-top"><span className="eyebrow">Mirar dentro / {selectedCase.period}</span><SheetClose className="close-sheet"><span>Cerrar</span><X size={18}/></SheetClose></div><div className="sheet-scroll"><SheetHeader className="case-header"><span className="eyebrow">{selectedCase.category}</span><SheetTitle className="case-title">{selectedCase.name}</SheetTitle><SheetDescription className="case-description">{selectedCase.intro}</SheetDescription><p className="case-role">{selectedCase.role}</p></SheetHeader><div className="case-chapters">{selectedCase.chapters.map((chapter,index)=><section key={chapter.label} className="case-chapter" style={{'--chapter-delay':`${index*80+100}ms`} as CSSProperties}><span className="eyebrow">{chapter.label}</span><h3>{chapter.title}</h3><p>{chapter.text}</p></section>)}</div><div className="case-sources"><span className="eyebrow">El trabajo y su contexto</span>{selectedCase.links.map(link=><OutLink href={link.url} key={link.url}>{link.label}</OutLink>)}</div><SheetClose className="case-back"><ArrowRight size={16}/> Volver al portfolio</SheetClose></div></SheetContent></Sheet>
-  </>;
+        <section className="archive-door shell">
+          <span className="kicker">05 / Conversaciones y notas</span>
+          <div>
+            <h2>
+              También
+              <br />
+              <em>lo cuento.</em>
+            </h2>
+            <p>
+              Diez conversaciones largas, charlas y artículos.
+              <br />
+              El contexto que no cabe en una bio.
+            </p>
+            <a
+              href="/archivo"
+              className="archive-arrow"
+              aria-label="Abrir el archivo de conversaciones y notas"
+            >
+              <ArrowUpRight size={64} />
+            </a>
+          </div>
+        </section>
+      </main>
+      <Footer />
+    </>
+  );
 }
