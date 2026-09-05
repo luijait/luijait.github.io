@@ -1,4 +1,5 @@
 'use client';
+import { useLocale } from '@/components/locale';
 import { useEffect, useState } from 'react';
 import { ArrowUpRight } from 'lucide-react';
 import {
@@ -14,8 +15,9 @@ import {
   OutLink,
   CaseReader,
 } from '@/components/portfolio';
-import { papers } from '../content';
 export default function Research() {
+  const { t, path, content } = useLocale();
+  const { papers } = content;
   const [expanded, setExpanded] = useState<string[]>([]);
   useEffect(() => {
     const openFromHash = () => {
@@ -32,7 +34,7 @@ export default function Research() {
     openFromHash();
     window.addEventListener('hashchange', openFromHash);
     return () => window.removeEventListener('hashchange', openFromHash);
-  }, []);
+  }, [papers]);
   return (
     <>
       <Motion />
@@ -40,33 +42,38 @@ export default function Research() {
       <main id="contenido">
         <section className="inner-hero research-hero shell">
           <span className="kicker">
-            2025—2026 / Siete preprints en coautoría
+            {t('2025—2026 / Siete preprints en coautoría')}
           </span>
           <h1>
-            De construir
+            {t('De construir')}
             <br />
-            <em>a comprender.</em>
+            <em>{t('a comprender.')}</em>
           </h1>
           <div className="inner-intro">
             <p>
-              Una línea de investigación que conecta sistemas, formación,
-              evaluación y estrategia. Leer, implementar y contrastar en equipo.
+              {t(
+                'Una línea de investigación que conecta sistemas, formación, evaluación y estrategia. Leer, implementar y contrastar en equipo.',
+              )}
             </p>
-            <span className="research-total" aria-label="Siete trabajos">
+            <span className="research-total" aria-label={t('Siete trabajos')}>
               07
             </span>
           </div>
         </section>
-        <section className="research-body shell" aria-label="Publicaciones">
+        <section
+          className="research-body shell"
+          aria-label={t('Publicaciones')}
+        >
           <div className="research-context">
             <span className="kicker">CAI / Alias Robotics</span>
             <p>
-              Soy coautor de estos siete trabajos, desarrollados con el equipo
-              de Alias Robotics. Parten de CAI y amplían la investigación hacia
-              formación, evaluación y estrategia.
+              {t(
+                'Soy coautor de estos siete trabajos, desarrollados con el equipo de Alias Robotics. Parten de CAI y amplían la investigación hacia formación, evaluación y estrategia.',
+              )}
             </p>
             <CaseReader caseId="cai" className="ink-button">
-              El contexto de CAI <ArrowUpRight size={18} />
+              {t('El contexto de CAI')}
+              <ArrowUpRight size={18} />
             </CaseReader>
           </div>
           <Accordion
@@ -92,14 +99,17 @@ export default function Research() {
                 </AccordionTrigger>
                 <AccordionContent className="publication-content">
                   <div>
-                    <span className="kicker">{paper.tag} / En coautoría</span>
+                    <span className="kicker">
+                      {paper.tag}
+                      {t('/ En coautoría')}
+                    </span>
                     <h2>{paper.title}</h2>
                     <p>{paper.description}</p>
                     <OutLink
                       href={`https://arxiv.org/abs/${paper.id}`}
                       className="ink-link"
                     >
-                      Leer en arXiv
+                      {t('Leer en arXiv')}
                     </OutLink>
                   </div>
                 </AccordionContent>
@@ -107,17 +117,18 @@ export default function Research() {
             ))}
           </Accordion>
           <div className="workshop-note">
-            <span className="kicker">La conversación continúa</span>
+            <span className="kicker">{t('La conversación continúa')}</span>
             <p>
-              CAI cuenta también con una versión vinculada al taller AICS 2026,
-              asociado a AAAI. Una misma investigación en otro espacio de
-              intercambio.
+              {t(
+                'CAI cuenta también con una versión vinculada al taller AICS 2026, asociado a AAAI. Una misma investigación en otro espacio de intercambio.',
+              )}
             </p>
             <OutLink href="https://aics.site/">AICS 2026</OutLink>
           </div>
-          <a href="/archivo" className="next-chapter">
+          <a href={path('/archivo')} className="next-chapter">
             <span>
-              Otra forma de entrar<strong>Las conversaciones</strong>
+              {t('Otra forma de entrar')}
+              <strong>{t('Las conversaciones')}</strong>
             </span>
             <ArrowUpRight size={36} />
           </a>

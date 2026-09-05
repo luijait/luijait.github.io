@@ -1,9 +1,10 @@
 import type { Metadata } from 'next';
 export const metadata: Metadata = {
   title: 'Mi historia — Luijait',
-  description:
-    'De Villanueva del Arzobispo a TryHackMe: la trayectoria de Luis Javier Navarrete Lozano entre curiosidad, sistemas, productos e investigación.',
-  alternates: { canonical: '/historia' },
+  alternates: {
+    canonical: '/historia/',
+    languages: { es: '/historia/', en: '/en/story/' },
+  },
 };
 export default function Layout({ children }: { children: React.ReactNode }) {
   return children;

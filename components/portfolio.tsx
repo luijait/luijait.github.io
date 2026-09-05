@@ -1,4 +1,5 @@
 'use client';
+import { useLocale, localizedPath } from '@/components/locale';
 import { useEffect, useState, type ReactNode, type CSSProperties } from 'react';
 import { ArrowUpRight, ArrowLeft, X, Plus } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -11,7 +12,6 @@ import {
   SheetDescription,
   SheetClose,
 } from '@/components/ui/sheet';
-import { cases } from '@/app/content';
 
 export function OutLink({
   href,
@@ -35,15 +35,20 @@ export function OutLink({
   );
 }
 export function Header({ active = 'trabajo' }: { active?: string }) {
+  const { t, path, locale } = useLocale();
   const [hex, setHex] = useState(false);
   return (
     <>
       <a className="skip-link" href="#contenido">
-        Saltar al contenido
+        {t('Saltar al contenido')}
       </a>
       <header className="site-nav shell">
         <div className="brand-group">
-          <a className="brand" href="/" aria-label="Luijait, inicio">
+          <a
+            className="brand"
+            href={path('/')}
+            aria-label={t('Luijait, inicio')}
+          >
             luijait<span>_</span>
           </a>
           <Button
@@ -52,8 +57,8 @@ export function Header({ active = 'trabajo' }: { active?: string }) {
             onClick={() => setHex(!hex)}
             aria-label={
               hex
-                ? 'Ocultar alias hexadecimal'
-                : 'Descubrir el alias en hexadecimal'
+                ? t('Ocultar alias hexadecimal')
+                : t('Descubrir el alias en hexadecimal')
             }
             aria-expanded={hex}
             aria-controls="alias-code"
@@ -68,20 +73,20 @@ export function Header({ active = 'trabajo' }: { active?: string }) {
             {hex ? '0x6c75696a616974 = luijait' : ''}
           </span>
         </div>
-        <nav aria-label="Principal">
+        <nav aria-label={t('Principal')}>
           {[
-            { id: 'trabajo', url: '/#trabajo', label: 'Trabajo' },
-            { id: 'historia', url: '/historia', label: 'Mi historia' },
+            { id: 'trabajo', url: '/#trabajo', label: t('Trabajo') },
+            { id: 'historia', url: '/historia', label: t('Mi historia') },
             {
               id: 'investigacion',
               url: '/investigacion',
-              label: 'Investigación',
+              label: t('Investigación'),
             },
-            { id: 'archivo', url: '/archivo', label: 'Archivo' },
+            { id: 'archivo', url: '/archivo', label: t('Archivo') },
           ].map((item) => (
             <a
               key={item.id}
-              href={item.url}
+              href={path(item.url)}
               className={active === item.id ? 'active' : ''}
               aria-current={active === item.id ? 'page' : undefined}
             >
@@ -89,29 +94,55 @@ export function Header({ active = 'trabajo' }: { active?: string }) {
             </a>
           ))}
         </nav>
-        <a className="nav-contact" href="#contacto">
-          Hablemos <ArrowUpRight size={16} />
-        </a>
+        <div className="nav-utilities">
+          <div
+            className="language-links"
+            role="navigation"
+            aria-label={t('Idioma')}
+          >
+            {(['es', 'en'] as const).map((language) => (
+              <a
+                key={language}
+                href={localizedPath(
+                  active === 'trabajo' ? '/' : `/${active}`,
+                  language,
+                )}
+                hrefLang={language}
+                lang={language}
+                aria-label={language === 'es' ? 'Español' : 'English'}
+                aria-current={locale === language ? 'page' : undefined}
+              >
+                {language.toUpperCase()}
+              </a>
+            ))}
+          </div>
+          <a className="nav-contact" href="#contacto">
+            {t('Hablemos')}
+            <ArrowUpRight size={16} />
+          </a>
+        </div>
       </header>
     </>
   );
 }
 export function Footer() {
+  const { t, path } = useLocale();
   return (
     <footer id="contacto" className="contact-scene">
       <div className="shell">
         <div className="contact-top">
-          <span className="kicker">¿Lo hablamos?</span>
+          <span className="kicker">{t('¿Lo hablamos?')}</span>
           <span className="contact-status">
-            <i /> Siempre hay una buena pregunta.
+            <i />
+            {t('Siempre hay una buena pregunta.')}
           </span>
         </div>
         <h2>
-          La próxima idea
+          {t('La próxima idea')}
           <br />
-          puede empezar
+          {t('puede empezar')}
           <br />
-          <em>por aquí.</em>
+          <em>{t('por aquí.')}</em>
           <ArrowUpRight aria-hidden="true" />
         </h2>
         <div className="contact-actions">
@@ -119,16 +150,16 @@ export function Footer() {
             href="https://es.linkedin.com/in/luis-javier-navarrete-lozano-9187852b9"
             className="contact-button"
           >
-            Escríbeme en LinkedIn
+            {t('Escríbeme en LinkedIn')}
           </OutLink>
           <OutLink href="https://x.com/luijait_" className="contact-x">
-            O nos vemos en X / @luijait_
+            {t('O nos vemos en X / @luijait_')}
           </OutLink>
         </div>
         <div className="site-footer">
-          <a href="/">Luis Javier Navarrete Lozano</a>
+          <a href={path('/')}>Luis Javier Navarrete Lozano</a>
           <OutLink href="https://github.com/luijait">GitHub</OutLink>
-          <a href="#">Volver arriba ↑</a>
+          <a href="#">{t('Volver arriba ↑')}</a>
           <span>© 2026</span>
         </div>
       </div>
@@ -184,23 +215,31 @@ export function CaseReader({
   children?: ReactNode;
   className?: string;
 }) {
-  const item = cases.find((c) => c.id === caseId) || cases[0];
+  const { t, content } = useLocale();
+  const item = content.cases.find((c) => c.id === caseId) || content.cases[0];
   return (
     <Sheet>
       <SheetTrigger
         render={<Button variant="ghost" className={className} />}
-        aria-label={`Explorar ${item.name}`}
+        aria-label={`${t('Explorar')} ${item.name}`}
       >
         {children || (
           <>
-            Ver el proyecto <Plus size={18} />
+            {t('Ver el proyecto')}
+            <Plus size={18} />
           </>
         )}
       </SheetTrigger>
       <SheetContent className="case-reader" showCloseButton={false}>
         <div className="reader-bar">
-          <span className="kicker">{item.period} / Mirar dentro</span>
-          <SheetClose className="reader-close" aria-label="Cerrar proyecto">
+          <span className="kicker">
+            {item.period}
+            {t('/ Mirar dentro')}
+          </span>
+          <SheetClose
+            className="reader-close"
+            aria-label={t('Cerrar proyecto')}
+          >
             <X size={22} />
           </SheetClose>
         </div>
@@ -227,7 +266,7 @@ export function CaseReader({
             ))}
           </div>
           <div className="reader-sources">
-            <span className="kicker">El trabajo y su contexto</span>
+            <span className="kicker">{t('El trabajo y su contexto')}</span>
             {item.links.map((link) => (
               <OutLink key={link.url} href={link.url}>
                 {link.label}
@@ -235,7 +274,8 @@ export function CaseReader({
             ))}
           </div>
           <SheetClose className="reader-return">
-            <ArrowLeft size={18} /> Volver al portfolio
+            <ArrowLeft size={18} />
+            {t('Volver al portfolio')}
           </SheetClose>
         </div>
       </SheetContent>

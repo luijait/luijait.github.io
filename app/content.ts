@@ -48,12 +48,12 @@ export const cases = [
     title: 'Una necesidad real. Una idea compartida.',
     intro:
       'Una pregunta surgida trabajando en Omega se convirtió en un prototipo, y después en una herramienta utilizada por otras personas.',
-    role: 'Cofundador y CTO · Junto a Jon García Agramonte y el equipo',
+    role: 'Cofundador y CTO · Junto a Omega y el equipo',
     chapters: [
       {
         label: '01 / El comienzo',
         title: 'La idea aparece trabajando',
-        text: 'El origen de 0dAI está en una necesidad práctica de seguridad en Omega AI. Con Jon, las conversaciones sobre modelos y las primeras pruebas dieron forma a una propuesta. La iniciativa creció mediante trabajo compartido, con recursos e infraestructura que ya formaban parte de ese entorno.',
+        text: 'El origen de 0dAI está en una necesidad práctica de seguridad en Omega AI. Con Omega, las conversaciones sobre modelos y las primeras pruebas dieron forma a una propuesta. La iniciativa creció mediante trabajo compartido, con recursos e infraestructura que ya formaban parte de ese entorno.',
       },
       {
         label: '02 / Mi aportación',
@@ -68,7 +68,7 @@ export const cases = [
     ],
     links: [
       {
-        label: 'El origen, contado con Jon',
+        label: 'El origen, contado con Omega',
         url: 'https://www.elladodelmal.com/2024/03/0dai-un-modelo-ai-llm-para-hacer.html',
       },
       {
@@ -92,17 +92,22 @@ export const cases = [
     role: 'AI engineer · TryHackMe / NoScope',
     chapters: [
       {
-        label: '01 / Qué estamos construyendo',
+        label: '01 / Volver desde otro lugar',
+        title: 'Antes resolvía sus máquinas. Hoy trabajo aquí.',
+        text: 'Antes de dedicarme a la IA pasé cientos de máquinas de TryHackMe y otras plataformas. Eran una forma de aprender, equivocarme y volver a intentarlo. No imaginaba que un día acabaría trabajando en una de ellas. Hoy contribuyo desde el equipo de NoScope a construir la tecnología que otras personas van a utilizar.',
+      },
+      {
+        label: '02 / Qué estamos construyendo',
         title: 'IA para evaluar y mejorar la seguridad',
         text: 'NoScope desarrolla un producto de pentesting continuo asistido por agentes de IA, con supervisión humana. Formo parte del equipo de ingeniería de IA, en el punto donde investigación, desarrollo y producto se encuentran.',
       },
       {
-        label: '02 / Lo que me mueve',
+        label: '03 / Lo que me mueve',
         title: 'Que la tecnología llegue a más equipos',
         text: 'Me interesa que esta tecnología sea útil también para organizaciones que no tienen los recursos de una gran empresa. Es una de las ideas que comenté en La Jaula en 2026: pensar en quién utiliza lo que construimos, cómo accede a ello y qué valor le aporta.',
       },
       {
-        label: '03 / Del trabajo al aprendizaje',
+        label: '04 / Del trabajo al aprendizaje',
         title: 'También se convierte en una room',
         text: 'En julio de 2026 compartí cómo un hallazgo de nuestro agente había dado lugar a una room de TryHackMe. Una forma de conectar el trabajo del equipo con una experiencia en la que otras personas pueden aprender.',
       },
@@ -167,14 +172,15 @@ export const cases = [
 
 export const chapters = [
   {
-    era: 'El principio',
-    title: 'Una pequeña pantalla que contenía un mundo.',
+    era: '2012—2020',
+    title: 'Del PC de mi hermana a una libreta llena de C.',
     paragraphs: [
-      'Soy de Villanueva del Arzobispo, Jaén. Antes de pensar en cargos o papers, me intrigaba cómo una Nintendo DS o un ordenador podían producir imágenes, juegos y mundos. Quería saber qué estaba ocurriendo dentro. También quería desarrollar videojuegos.',
-      'Esa curiosidad fue cambiando de forma: primero aprender a usar las cosas; después, entenderlas lo suficiente como para hacerlas, cambiarlas y compartirlas. Es el hilo que conecta mucho de lo que vino después.',
+      'Soy de Villanueva del Arzobispo, Jaén. Quería hacer videojuegos y entender cómo una pequeña pantalla podía contener un mundo. Una de mis primeras obsesiones fue conseguir monedas ilimitadas en los juegos de Facebook: llegué a arrancar Windows desde un USB en el PC de mi hermana, intentando sortear las restricciones de permisos para instalar Cheat Engine.',
+      'Aquello abrió muchas más preguntas. Empecé a obsesionarme con Linux, a instalar máquinas virtuales y a descubrir qué hacía cada componente del ordenador. Ya no bastaba con que algo funcionara: quería saber por qué.',
+      'En la ESO me llevaba una libreta a clase para escribir código C a mano. Me pasaba el día deseando llegar a casa y compilarlo por la tarde. Antes de los modelos y los agentes, había una libreta y muchas ganas de probar lo que había escrito.',
     ],
-    source: 'El comienzo, en Café & Pizza',
-    url: 'https://www.youtube.com/watch?v=syFP3M1y_XE&t=157s',
+    source: 'Recuerdo personal',
+    url: null,
   },
   {
     era: '2019—2021',
@@ -187,9 +193,11 @@ export const chapters = [
     url: 'https://www.juntadeandalucia.es/educacion/portals/web/formacion-profesional-andaluza/skills2020-2021/retransmisiones/-/contenidos/detalle/andaluciaskills-20-21-retransmisiones-39-ti-administracion-de-sistemas-en-red-dia-16jpohy44xvhz',
   },
   {
-    era: '2021—2022',
-    title: 'Publicar también es una forma de aprender.',
+    era: 'Antes de la IA',
+    title: 'De las máquinas al código que había dentro.',
     paragraphs: [
+      'Antes de dedicarme a la IA hice cientos de máquinas en TryHackMe y otras plataformas. Cada una era una excusa para investigar, atascarme, leer y volver a probar. Aprendía tanto de lo que no funcionaba como de lo que conseguía resolver.',
+      'Utilicé Kali Linux, Gentoo y Qubes OS. Me encantaba trastear con Metasploit, pero no me bastaba con ejecutar herramientas: quería leer su código y entender qué hacían. Esa forma de aprender, mirando por dentro, llegó antes que los modelos y los agentes.',
       'En 2021 anuncié un grupo para compartir documentación, cursos y ayuda con proyectos; también clases de programación en Twitch. Enseñar convivía con mi propio aprendizaje. Ese verano publiqué mi web personal en GitHub.',
       'Después llegaron herramientas y experimentos con sistemas y distintos lenguajes, entre ellos GONET Scanner en Go. La publicación y el intercambio técnico ya estaban ahí antes de 0dAI: dejar una pieza accesible también permite que alguien la utilice, la cuestione y te enseñe algo.',
     ],
@@ -200,10 +208,10 @@ export const chapters = [
     era: '2023—2024',
     title: 'Cuando una pregunta se convierte en un producto.',
     paragraphs: [
-      'En Omega AI, una necesidad práctica de seguridad abrió el camino a 0dAI. Con Jon García Agramonte y el equipo pasamos de hablar sobre una idea a construir un prototipo y un servicio. Fui cofundador y CTO, además de participar en su desarrollo.',
+      'En Omega AI, una necesidad práctica de seguridad abrió el camino a 0dAI. Con Omega y el equipo pasamos de hablar sobre una idea a construir un prototipo y un servicio. Fui cofundador y CTO, además de participar en su desarrollo.',
       'El trabajo no terminó cuando el prototipo funcionó. Los usuarios cambiaron prioridades, aparecieron expectativas nuevas y hubo decisiones sobre infraestructura, modelos y experiencia. Esa etapa me dio muchas preguntas sobre lo que significa llevar una tecnología a un uso real.',
     ],
-    source: 'El origen de 0dAI, contado con Jon',
+    source: 'El origen de 0dAI, contado con Omega',
     url: 'https://www.elladodelmal.com/2024/03/0dai-un-modelo-ai-llm-para-hacer.html',
   },
   {
@@ -230,7 +238,8 @@ export const chapters = [
     era: 'Ahora · 2026',
     title: 'La historia sigue abierta.',
     paragraphs: [
-      'Hoy trabajo en TryHackMe, como AI engineer en el equipo de NoScope. Sigo investigando y desarrollando IA aplicada a ciberseguridad. Ahora pienso también en quién utiliza esa tecnología, cómo llega a sus manos y qué hace posible para su equipo.',
+      'Hoy trabajo en TryHackMe, como AI engineer en el equipo de NoScope. Una de las plataformas en las que antes resolvía máquinas se ha convertido en el lugar donde trabajo. Quién me lo iba a decir cuando pasaba horas intentando entender el siguiente reto.',
+      'Sigo investigando y desarrollando IA aplicada a ciberseguridad. Ahora pienso también en quién utiliza esa tecnología, cómo llega a sus manos y qué hace posible para su equipo. Conozco esa curiosidad desde el otro lado de la pantalla.',
       'Fuera de ese trabajo siguen apareciendo ideas: Blurtain para macOS, experimentos con modelos y un MOBA de fin de semana en Unity. A veces una pregunta necesita un paper. Otras veces, simplemente hay que ponerse a construir.',
     ],
     source: 'La etapa actual, en La Jaula',
@@ -468,22 +477,22 @@ export const experiments = [
     url: 'https://github.com/luijait/LLM_From_Scratch',
   },
   {
-    name: 'Easy PDF Translator',
-    kind: 'Herramientas · Documentos',
-    text: 'Una herramienta para traducir PDFs sin ir copiando el documento por partes.',
-    url: 'https://github.com/luijait/Easy-PDFTranslator',
+    name: 'LunarLander · PPO',
+    kind: 'Aprendizaje por refuerzo · 2025',
+    text: 'Un agente entrenado para aterrizar. Recompensas, decisiones y aprendizaje con Stable Baselines3.',
+    url: 'https://huggingface.co/luijait/ppo-LunarLander-v2',
   },
   {
-    name: 'Modelos y adaptaciones',
-    kind: 'Hugging Face · Experimentación',
-    text: 'Pruebas con modelos, cuantización y aprendizaje por refuerzo.',
-    url: 'https://huggingface.co/luijait',
+    name: 'Space Invaders · DQN',
+    kind: 'Agentes que juegan · 2025',
+    text: 'Entrenar un agente de Atari durante un millón de pasos. Un experimento del curso Deep RL de Hugging Face.',
+    url: 'https://huggingface.co/luijait/dqn-SpaceInvadersNoFrameskip-v4',
   },
   {
-    name: 'Ryzentosh',
-    kind: 'Archivo · Sistemas',
-    text: 'Otra etapa del laboratorio: experimentar con el sistema que hay detrás del escritorio.',
-    url: 'https://github.com/luijait/Ryzentosh',
+    name: 'GONET Scanner',
+    kind: 'Go · Redes',
+    text: 'Mi etapa de redes, escrita en Go: descubrimiento de equipos y un parser propio para explorar cómo se comunican los sistemas.',
+    url: 'https://github.com/luijait/GONET-Scanner',
   },
 ];
 

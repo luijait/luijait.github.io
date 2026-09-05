@@ -1,14 +1,9 @@
 'use client';
+import { useLocale } from '@/components/locale';
 import { Fragment } from 'react';
 import { ArrowUpRight, Play } from 'lucide-react';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import { Header, Footer, Motion, OutLink } from '@/components/portfolio';
-import { media, writings } from '../content';
-const episodes = [...media].sort((a, b) => {
-  const date = (e: typeof a) =>
-    e.id === '4gQ3pW752EY' ? '20240518' : e.date.split('.').reverse().join('');
-  return date(b).localeCompare(date(a));
-});
 function timestamp(seconds: number) {
   const hours = Math.floor(seconds / 3600);
   const minutes = Math.floor((seconds % 3600) / 60);
@@ -18,6 +13,16 @@ function timestamp(seconds: number) {
     : `${minutes}:${rest}`;
 }
 export default function Archive() {
+  const { t, path, content } = useLocale();
+  const { media, writings } = content;
+  const episodes = [...media].sort((a, b) => {
+    const date = (e: typeof a) =>
+      e.id === '4gQ3pW752EY'
+        ? '20240518'
+        : e.date.split('.').reverse().join('');
+    return date(b).localeCompare(date(a));
+  });
+
   return (
     <>
       <Motion />
@@ -25,17 +30,18 @@ export default function Archive() {
       <main id="contenido">
         <section className="inner-hero archive-hero shell">
           <span className="kicker">
-            Conversaciones, charlas y notas / 2023—2026
+            {t('Conversaciones, charlas y notas / 2023—2026')}
           </span>
           <h1>
-            Con tiempo
+            {t('Con tiempo')}
             <br />
-            <em>para contarlo.</em>
+            <em>{t('para contarlo.')}</em>
           </h1>
           <div className="inner-intro">
             <p>
-              Comienzos, ideas, límites y aprendizajes. A veces una conversación
-              explica mejor el camino que cualquier descripción de un cargo.
+              {t(
+                'Comienzos, ideas, límites y aprendizajes. A veces una conversación explica mejor el camino que cualquier descripción de un cargo.',
+              )}
             </p>
             <span className="archive-glyph" aria-hidden="true">
               ↙
@@ -47,13 +53,15 @@ export default function Archive() {
             <TabsList
               variant="line"
               className="archive-tab-list"
-              aria-label="Tipo de contenido"
+              aria-label={t('Tipo de contenido')}
             >
               <TabsTrigger value="conversaciones">
-                Escuchar <span>10</span>
+                {t('Escuchar')}
+                <span>10</span>
               </TabsTrigger>
               <TabsTrigger value="notas">
-                Leer <span>03</span>
+                {t('Leer')}
+                <span>03</span>
               </TabsTrigger>
             </TabsList>
             <TabsContent value="conversaciones">
@@ -77,7 +85,7 @@ export default function Archive() {
                       <span className="episode-copy">
                         <small>
                           {episode.show}
-                          {i === 0 && <em>Más reciente</em>}
+                          {i === 0 && <em>{t('Más reciente')}</em>}
                         </small>
                         <strong>{episode.topic}</strong>
                         <span>
@@ -86,8 +94,8 @@ export default function Archive() {
                         <span className="episode-entry">
                           ↳{' '}
                           {episode.start
-                            ? `Entrar por ${timestamp(episode.start)}`
-                            : 'Desde el principio'}
+                            ? `${t('Entrar por')} ${timestamp(episode.start)}`
+                            : t('Desde el principio')}
                         </span>
                         {episode.note && (
                           <span className="episode-note">{episode.note}</span>
@@ -95,15 +103,18 @@ export default function Archive() {
                       </span>
                       <span className="episode-play">
                         <Play size={20} />
-                        <span className="sr-only">Abrir conversación</span>
+                        <span className="sr-only">
+                          {t('Abrir conversación')}
+                        </span>
                       </span>
                     </a>
                   </Fragment>
                 ))}
               </div>
               <div className="archive-note">
-                Cada enlace abre un pasaje seleccionado. Puedes volver al inicio
-                del vídeo para ver la conversación completa.
+                {t(
+                  'Cada enlace abre un pasaje seleccionado. Puedes volver al inicio del vídeo para ver la conversación completa.',
+                )}
               </div>
             </TabsContent>
             <TabsContent value="notas">
@@ -127,7 +138,9 @@ export default function Archive() {
             </TabsContent>
           </Tabs>
           <section className="talks-list">
-            <span className="kicker">También nos hemos encontrado en</span>
+            <span className="kicker">
+              {t('También nos hemos encontrado en')}
+            </span>
             <div>
               <OutLink href="https://aibirras.org/events">AiBirras</OutLink>
               <OutLink href="https://github.com/luijait/0dAI-Morteruelo-CON">
@@ -141,9 +154,10 @@ export default function Archive() {
               </OutLink>
             </div>
           </section>
-          <a className="next-chapter" href="/">
+          <a className="next-chapter" href={path('/')}>
             <span>
-              Volver a lo que construyo<strong>Trabajo seleccionado</strong>
+              {t('Volver a lo que construyo')}
+              <strong>{t('Trabajo seleccionado')}</strong>
             </span>
             <ArrowUpRight size={36} />
           </a>

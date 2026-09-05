@@ -1,4 +1,5 @@
 'use client';
+import { useLocale } from '@/components/locale';
 import { useEffect, useState } from 'react';
 import { ArrowDown, ArrowUpRight } from 'lucide-react';
 import {
@@ -8,8 +9,9 @@ import {
   AccordionContent,
 } from '@/components/ui/accordion';
 import { Header, Footer, Motion, OutLink } from '@/components/portfolio';
-import { chapters, courses } from '../content';
 export default function Story() {
+  const { t, path, content } = useLocale();
+  const { chapters, courses } = content;
   const [active, setActive] = useState(0);
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -32,23 +34,23 @@ export default function Story() {
       <main id="contenido">
         <section className="inner-hero shell">
           <span className="kicker">
-            De Villanueva del Arzobispo a todas estas preguntas
+            {t('De Villanueva del Arzobispo a todas estas preguntas')}
           </span>
           <h1>
-            La curiosidad
+            {t('La curiosidad')}
             <br />
-            <em>viene de antes.</em>
+            <em>{t('viene de antes.')}</em>
           </h1>
           <div className="inner-intro">
             <p>
-              Antes de la inteligencia artificial, los papers y los productos,
-              había una pregunta: ¿cómo puede una pequeña pantalla contener un
-              mundo?
+              {t(
+                'Antes de la inteligencia artificial, los papers y los productos, había una pregunta: ¿cómo puede una pequeña pantalla contener un mundo?',
+              )}
             </p>
             <a
               href="#recorrido"
               className="circle-button"
-              aria-label="Empezar a leer la historia"
+              aria-label={t('Empezar a leer la historia')}
             >
               <ArrowDown size={25} />
             </a>
@@ -57,10 +59,10 @@ export default function Story() {
         <section id="recorrido" className="biography shell">
           <aside className="biography-rail">
             <img
-              src="/luija.png"
+              src="/portraits/x-current.jpg"
               alt="Luis Javier Navarrete Lozano"
-              width={460}
-              height={460}
+              width={400}
+              height={400}
             />
             <div className="rail-name">
               <strong>
@@ -68,9 +70,9 @@ export default function Story() {
                 <br />
                 Navarrete Lozano
               </strong>
-              <span>Por aquí, Luija.</span>
+              <span>{t('Por aquí, Luija.')}</span>
             </div>
-            <nav aria-label="Capítulos de mi historia">
+            <nav aria-label={t('Capítulos de mi historia')}>
               {chapters.map((chapter, i) => (
                 <a
                   href={`#historia-${i}`}
@@ -99,23 +101,28 @@ export default function Story() {
                 {chapter.paragraphs.map((p) => (
                   <p key={p}>{p}</p>
                 ))}
-                <OutLink href={chapter.url} className="reference-link">
-                  {chapter.source}
-                </OutLink>
+                {chapter.url && (
+                  <OutLink href={chapter.url} className="reference-link">
+                    {chapter.source}
+                  </OutLink>
+                )}
               </article>
             ))}
             <Accordion className="education">
               <AccordionItem value="cursos">
                 <AccordionTrigger className="education-trigger">
                   <span>
-                    También hay una base.
-                    <small>Cursos de redes, Python, Linux y seguridad.</small>
+                    {t('También hay una base.')}
+                    <small>
+                      {t('Cursos de redes, Python, Linux y seguridad.')}
+                    </small>
                   </span>
                 </AccordionTrigger>
                 <AccordionContent className="education-content">
                   <p>
-                    Cursos completados y credenciales de estudiante de Cisco
-                    Networking Academy, Python, Linux y seguridad.
+                    {t(
+                      'Cursos completados y credenciales de estudiante de Cisco Networking Academy, Python, Linux y seguridad.',
+                    )}
                   </p>
                   {courses.map((course) => (
                     <OutLink
@@ -134,9 +141,10 @@ export default function Story() {
                 </AccordionContent>
               </AccordionItem>
             </Accordion>
-            <a href="/investigacion" className="next-chapter">
+            <a href={path('/investigacion')} className="next-chapter">
               <span>
-                Seguir el recorrido<strong>La investigación</strong>
+                {t('Seguir el recorrido')}
+                <strong>{t('La investigación')}</strong>
               </span>
               <ArrowUpRight size={36} />
             </a>

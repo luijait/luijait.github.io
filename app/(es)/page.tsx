@@ -1,4 +1,5 @@
 'use client';
+import { useLocale } from '@/components/locale';
 import { useState, type PointerEvent, type CSSProperties } from 'react';
 import {
   ArrowUpRight,
@@ -16,7 +17,6 @@ import {
   CaseReader,
   OutLink,
 } from '@/components/portfolio';
-import { papers, experiments } from './content';
 
 function tilt(event: PointerEvent<HTMLElement>) {
   if (
@@ -40,6 +40,8 @@ function resetTilt(event: PointerEvent<HTMLElement>) {
 }
 
 export default function Home() {
+  const { t, path, content, portraits } = useLocale();
+  const { papers, experiments } = content;
   const [protectedView, setProtectedView] = useState(true);
   return (
     <>
@@ -48,65 +50,60 @@ export default function Home() {
       <main id="contenido">
         <section className="hero-poster shell">
           <div className="hero-topline">
-            <span className="kicker">Luis Javier Navarrete Lozano</span>
-            <a className="current-badge" href="#tryhackme">
-              <i /> Ahora en <strong>TryHackMe</strong>
-              <ArrowUpRight size={16} />
-            </a>
+            <h1 className="kicker">Luis Javier Navarrete Lozano</h1>
+            <span className="hero-date-range">
+              2023 <span>—</span> 2026
+            </span>
           </div>
-          <h1 className="hero-name" aria-label="Luijait">
-            {'luijait.'.split('').map((letter, index) => (
-              <span key={index} style={{ '--index': index } as CSSProperties}>
-                {letter}
-              </span>
-            ))}
-          </h1>
-          <div
-            className="hero-object-wrap"
-            onPointerMove={tilt}
-            onPointerLeave={resetTilt}
-          >
-            <div className="hero-object">
-              <img
-                src="/hero-cartridge.png"
-                alt="Render conceptual de un cartucho de videojuegos abierto en cuatro capas: una metáfora de la curiosidad por entender qué hay dentro."
-                width={1254}
-                height={1254}
-                fetchPriority="high"
-              />
-            </div>
-            <a
-              className="object-point point-origin"
-              href="/historia"
-              aria-label="Mi historia: la curiosidad"
+          <div className="photo-sequence-wrap">
+            <ol
+              className="photo-sequence"
+              aria-label={t('Imágenes a lo largo de los años')}
             >
-              <span>01</span>
-              <span>La curiosidad</span>
-            </a>
-            <a
-              className="object-point point-research"
-              href="/investigacion"
-              aria-label="Explorar mi investigación"
-            >
-              <span>02</span>
-              <span>La investigación</span>
-            </a>
-            <a
-              className="object-point point-work"
-              href="#trabajo"
-              aria-label="Explorar lo que construyo"
-            >
-              <span>03</span>
-              <span>Lo que construyo</span>
-            </a>
+              {portraits.map((photo, index) => (
+                <li
+                  className="photo-year"
+                  key={photo.year}
+                  style={{ '--index': index } as CSSProperties}
+                >
+                  <a
+                    href={photo.source}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="photo-print"
+                    aria-label={`${photo.year} · ${photo.label}. ${t('Abrir la fuente.')}`}
+                  >
+                    <div className={`photo-frame crop-${photo.crop}`}>
+                      <img
+                        src={photo.src}
+                        alt={photo.alt}
+                        width={photo.width}
+                        height={photo.height}
+                        fetchPriority={index === 0 ? 'high' : 'auto'}
+                      />
+                      <span className="photo-source-arrow" aria-hidden="true">
+                        <ArrowUpRight size={18} />
+                      </span>
+                    </div>
+                    <div className="photo-note">
+                      <time dateTime={photo.year}>{photo.year}</time>
+                      <span>
+                        <strong>{photo.label}</strong>
+                        <small>{photo.detail}</small>
+                      </span>
+                    </div>
+                  </a>
+                </li>
+              ))}
+            </ol>
           </div>
           <div className="hero-copy">
             <p>
-              Investigo IA.
+              {t('Investigo IA.')}
               <br />
-              Construyo herramientas.
+              {t('Construyo modelos y agentes.')}
               <br />
-              <span>Me gusta mirar dentro.</span>
+              <span>{t('Me gusta mirar dentro.')}</span>
             </p>
             <div className="hero-current">
               <span className="kicker">AI engineer</span>
@@ -118,15 +115,16 @@ export default function Home() {
               <span className="round-arrow">
                 <ArrowDown size={22} />
               </span>
-              <span>Explorar el trabajo</span>
+              <span>{t('Explorar el trabajo')}</span>
             </a>
           </div>
           <div className="hero-caption">
             <span className="kicker">
-              Todo empezó con una pequeña pantalla.
+              {t('Todo empezó con una pequeña pantalla.')}
             </span>
-            <a href="/historia">
-              Esta es mi historia <ArrowUpRight size={16} />
+            <a href={path('/historia')}>
+              {t('Esta es mi historia')}
+              <ArrowUpRight size={16} />
             </a>
           </div>
         </section>
@@ -138,17 +136,17 @@ export default function Home() {
         >
           <div className="section-heading" data-enter>
             <div>
-              <span className="kicker">01 / Trabajo seleccionado</span>
+              <span className="kicker">{t('01 / Trabajo seleccionado')}</span>
               <h2 id="work-title">
-                De 0dAI
+                {t('De 0dAI')}
                 <br />
-                <em>a TryHackMe.</em>
+                <em>{t('a TryHackMe.')}</em>
               </h2>
             </div>
             <p>
-              Investigación, producto
+              {t('Investigación, producto')}
               <br />
-              y proyectos por mi cuenta.
+              {t('y proyectos por mi cuenta.')}
             </p>
           </div>
           <div className="project-stack">
@@ -159,9 +157,10 @@ export default function Home() {
             >
               <div className="card-top">
                 <span className="card-status">
-                  <i /> Mi trabajo actual
+                  <i />
+                  {t('Mi trabajo actual')}
                 </span>
-                <span className="kicker">La etapa actual</span>
+                <span className="kicker">{t('La etapa actual')}</span>
               </div>
               <div className="thm-layout">
                 <div>
@@ -179,23 +178,25 @@ export default function Home() {
                     <span>ENGINEER</span>
                   </div>
                   <p>
-                    Investigo y desarrollo IA aplicada a ciberseguridad con el
-                    equipo de NoScope, en TryHackMe.
+                    {t(
+                      'Antes resolvía máquinas en TryHackMe. Hoy construyo modelos y agentes con el equipo de NoScope. La misma curiosidad, desde el otro lado.',
+                    )}
                   </p>
                   <CaseReader caseId="noscope">
-                    Mi etapa actual <ArrowUpRight size={20} />
+                    {t('Mi etapa actual')}
+                    <ArrowUpRight size={20} />
                   </CaseReader>
                   <OutLink
                     href="https://www.noscope.com/company"
                     className="card-source"
                   >
-                    Conocer al equipo
+                    {t('Conocer al equipo')}
                   </OutLink>
                 </div>
               </div>
               <div className="card-bottom">
                 <span>TryHackMe / NoScope</span>
-                <span>Investigación · Producto · Ciberseguridad</span>
+                <span>{t('Investigación · Producto · Ciberseguridad')}</span>
                 <span>01 / 04</span>
               </div>
             </article>
@@ -206,34 +207,39 @@ export default function Home() {
               onPointerLeave={resetTilt}
             >
               <div className="card-top">
-                <span className="kicker">Investigación en Alias Robotics</span>
+                <span className="kicker">
+                  {t('Investigación en Alias Robotics')}
+                </span>
                 <span className="kicker">2025—2026</span>
               </div>
               <div className="cai-layout">
                 <div className="project-copy">
                   <span className="project-overline">CAI / CAIBench</span>
                   <h3>
-                    Construir.
-                    <br />Y aprender
+                    {t('Construir.')}
                     <br />
-                    <em>a medir.</em>
+                    {t('Y aprender')}
+                    <br />
+                    <em>{t('a medir.')}</em>
                   </h3>
                   <p>
-                    Una infraestructura abierta y siete trabajos en coautoría
-                    para investigar IA aplicada a ciberseguridad.
+                    {t(
+                      'Una infraestructura abierta y siete trabajos en coautoría para investigar IA aplicada a ciberseguridad.',
+                    )}
                   </p>
                   <CaseReader caseId="cai">
-                    Abrir el caso <Plus size={20} />
+                    {t('Abrir el caso')}
+                    <Plus size={20} />
                   </CaseReader>
                 </div>
                 <div
                   className="paper-display"
-                  aria-label="Una selección de los papers publicados"
+                  aria-label={t('Una selección de los papers publicados')}
                 >
                   {[papers[0], papers[2], papers[1]].map((paper, index) => (
                     <a
                       className={`paper-tile paper-tile-${index}`}
-                      href={`/investigacion#paper-${paper.id}`}
+                      href={path(`/investigacion#paper-${paper.id}`)}
                       key={paper.id}
                     >
                       <div className="paper-tile-meta">
@@ -243,7 +249,7 @@ export default function Home() {
                       <span className="paper-tile-title">{paper.short}</span>
                       <p>{paper.question}</p>
                       <div className="paper-tile-bottom">
-                        <span>Coautor · arXiv</span>
+                        <span>{t('Coautor · arXiv')}</span>
                         <ArrowUpRight size={20} />
                       </div>
                     </a>
@@ -252,7 +258,9 @@ export default function Home() {
               </div>
               <div className="card-bottom">
                 <span>CAI · CAIBench · Fluency</span>
-                <a href="/investigacion">Explorar las 7 publicaciones ↗</a>
+                <a href={path('/investigacion')}>
+                  {t('Explorar las 7 publicaciones ↗')}
+                </a>
                 <span>02 / 04</span>
               </div>
             </article>
@@ -261,51 +269,57 @@ export default function Home() {
               style={{ '--stack': 2 } as CSSProperties}
             >
               <div className="card-top">
-                <span className="kicker">Cofundador y CTO · 0dAI</span>
+                <span className="kicker">{t('Cofundador y CTO · 0dAI')}</span>
                 <span className="kicker">2023—2024</span>
               </div>
               <div className="odai-layout">
                 <div className="project-copy">
-                  <span className="project-overline">El primer producto</span>
+                  <span className="project-overline">
+                    {t('El primer producto')}
+                  </span>
                   <h3>
-                    Una idea.
+                    {t('Una idea.')}
                     <br />
-                    <em>Luego, usuarios.</em>
+                    <em>{t('Luego, usuarios.')}</em>
                   </h3>
                   <p>
-                    Una necesidad en Omega se convirtió, con Jon y el equipo, en
-                    un prototipo y un servicio.
+                    {t(
+                      'Una necesidad en Omega se convirtió, junto al equipo, en un prototipo y un servicio.',
+                    )}
                   </p>
                   <CaseReader caseId="0dai">
-                    Mirar dentro <Plus size={20} />
+                    {t('Mirar dentro')}
+                    <Plus size={20} />
                   </CaseReader>
                 </div>
                 <div className="odai-process">
                   <span className="odai-mark">
                     0d<span>AI</span>
                   </span>
-                  <ol aria-label="El recorrido de 0dAI">
+                  <ol aria-label={t('El recorrido de 0dAI')}>
                     <li>
                       <span>01</span>
-                      <strong>Una necesidad</strong>
+                      <strong>{t('Una necesidad')}</strong>
                       <ArrowDown size={16} />
                     </li>
                     <li>
                       <span>02</span>
-                      <strong>Un prototipo</strong>
+                      <strong>{t('Un prototipo')}</strong>
                       <ArrowDown size={16} />
                     </li>
                     <li>
                       <span>03</span>
-                      <strong>Personas usándolo</strong>
+                      <strong>{t('Personas usándolo')}</strong>
                       <ArrowUpRight size={16} />
                     </li>
                   </ol>
                 </div>
               </div>
               <div className="card-bottom">
-                <span>De la propuesta al uso real</span>
-                <span>Iniciativa personal · Construcción compartida</span>
+                <span>{t('De la propuesta al uso real')}</span>
+                <span>
+                  {t('Iniciativa personal · Construcción compartida')}
+                </span>
                 <span>03 / 04</span>
               </div>
             </article>
@@ -314,48 +328,56 @@ export default function Home() {
               style={{ '--stack': 3 } as CSSProperties}
             >
               <div className="card-top">
-                <span className="kicker">Blurtain · Proyecto personal</span>
+                <span className="kicker">
+                  {t('Blurtain · Proyecto personal')}
+                </span>
                 <span className="kicker">macOS · 2026</span>
               </div>
               <div className="blurtain-layout">
                 <div className="project-copy">
-                  <span className="project-overline">Una pequeña solución</span>
+                  <span className="project-overline">
+                    {t('Una pequeña solución')}
+                  </span>
                   <h3>
-                    Enseña
+                    {t('Enseña')}
                     <br />
-                    <em>lo que quieres.</em>
+                    <em>{t('lo que quieres.')}</em>
                   </h3>
                   <p>
-                    Una aplicación para compartir pantalla sin dejarlo todo a la
-                    vista.
+                    {t(
+                      'Una aplicación para compartir pantalla sin dejarlo todo a la vista.',
+                    )}
                   </p>
                   <CaseReader caseId="blurtain">
-                    Explorar Blurtain <ArrowUpRight size={20} />
+                    {t('Explorar Blurtain')}
+                    <ArrowUpRight size={20} />
                   </CaseReader>
                 </div>
                 <div className="privacy-demo">
                   <div className="demo-bar">
-                    <span>Demostración del concepto</span>
+                    <span>{t('Demostración del concepto')}</span>
                     <span>
                       {protectedView ? <EyeOff size={17} /> : <Eye size={17} />}
                     </span>
                   </div>
                   <div className="demo-content">
-                    <span className="kicker">Lo que estás compartiendo</span>
+                    <span className="kicker">
+                      {t('Lo que estás compartiendo')}
+                    </span>
                     <h4>
-                      Una buena idea
+                      {t('Una buena idea')}
                       <br />
-                      merece verse.
+                      {t('merece verse.')}
                     </h4>
                     <div
                       className={`private-note ${protectedView ? 'protected' : ''}`}
                     >
-                      <span>Y este detalle</span>
-                      <strong>prefieres reservarlo.</strong>
+                      <span>{t('Y este detalle')}</span>
+                      <strong>{t('prefieres reservarlo.')}</strong>
                     </div>
                   </div>
                   <label className="demo-control" htmlFor="privacy-control">
-                    <span>Proteger el detalle</span>
+                    <span>{t('Proteger el detalle')}</span>
                     <Switch
                       id="privacy-control"
                       checked={protectedView}
@@ -366,9 +388,9 @@ export default function Home() {
                 </div>
               </div>
               <div className="card-bottom">
-                <span>Diseñada para una molestia cotidiana</span>
+                <span>{t('Diseñada para una molestia cotidiana')}</span>
                 <OutLink href="https://github.com/luijait/blurtain">
-                  Ver el proyecto
+                  {t('Ver el proyecto')}
                 </OutLink>
                 <span>04 / 04</span>
               </div>
@@ -379,66 +401,70 @@ export default function Home() {
         <section className="person-section shell" data-enter>
           <div className="person-photo">
             <img
-              src="/luija.png"
+              src="/portraits/x-current.jpg"
               alt="Luis Javier Navarrete Lozano"
-              width={460}
-              height={460}
+              width={400}
+              height={400}
               loading="lazy"
             />
-            <span className="photo-caption">Luija, al otro lado.</span>
+            <span className="photo-caption">{t('Luija, al otro lado.')}</span>
           </div>
           <div className="person-copy">
-            <span className="kicker">02 / La persona detrás</span>
+            <span className="kicker">{t('02 / La persona detrás')}</span>
             <h2>
-              «Hace falta
+              {t('«Hace falta')}
               <br />
-              <em>entender.»</em>
+              <em>{t('entender.»')}</em>
             </h2>
             <p>
-              Soy Luija, de Villanueva del Arzobispo, Jaén. Empecé queriendo
-              hacer videojuegos. Por el camino llegaron Linux, las redes, la
-              ciberseguridad y la IA. Sigo mirando qué hay dentro.
+              {t(
+                'Soy Luija, de Villanueva del Arzobispo, Jaén. Empecé queriendo hacer videojuegos y escribiendo C en una libreta durante las clases de la ESO, contando las horas para llegar a casa y compilarlo. Después llegaron Linux, las redes y la IA. La curiosidad sigue siendo la misma.',
+              )}
             </p>
             <div className="person-links">
-              <a href="/historia" className="ink-link">
-                Leer mi historia <ArrowUpRight size={20} />
+              <a href={path('/historia')} className="ink-link">
+                {t('Leer mi historia')}
+                <ArrowUpRight size={20} />
               </a>
               <OutLink
                 href="https://x.com/luijait_/status/2095907175721734495"
                 className="quote-source"
               >
-                La frase, en X
+                {t('La frase, en X')}
               </OutLink>
             </div>
           </div>
           <span className="person-margin" aria-hidden="true">
-            JAÉN → CURIOSIDAD →
+            {t('JAÉN → CURIOSIDAD →')}
           </span>
         </section>
 
         <section className="research-door">
           <div className="shell research-door-inner">
             <a
-              href="/investigacion"
+              href={path('/investigacion')}
               className="research-number"
-              aria-label="Explorar siete trabajos en coautoría"
+              aria-label={t('Explorar siete trabajos en coautoría')}
             >
               07<span>↗</span>
             </a>
             <div>
-              <span className="kicker">03 / Investigación publicada</span>
+              <span className="kicker">
+                {t('03 / Investigación publicada')}
+              </span>
               <h2>
-                Las preguntas
+                {t('Las preguntas')}
                 <br />
-                <em>también se publican.</em>
+                <em>{t('también se publican.')}</em>
               </h2>
               <p>
-                CAI, evaluación, formación, estrategia.
+                {t('CAI, evaluación, formación, estrategia.')}
                 <br />
-                Siete trabajos conectados, en coautoría.
+                {t('Siete trabajos conectados, en coautoría.')}
               </p>
-              <a href="/investigacion" className="ink-link">
-                Entrar en la investigación <ArrowRight size={20} />
+              <a href={path('/investigacion')} className="ink-link">
+                {t('Entrar en la investigación')}
+                <ArrowRight size={20} />
               </a>
             </div>
           </div>
@@ -447,17 +473,17 @@ export default function Home() {
         <section className="lab-section shell" id="laboratorio">
           <div className="section-heading" data-enter>
             <div>
-              <span className="kicker">04 / Fuera del guion</span>
+              <span className="kicker">{t('04 / Fuera del guion')}</span>
               <h2>
-                Hay ideas que empiezan
+                {t('Hay ideas que empiezan')}
                 <br />
-                <em>un fin de semana.</em>
+                <em>{t('un fin de semana.')}</em>
               </h2>
             </div>
             <span className="lab-stamp">
-              EN MARCHA
+              {t('EN MARCHA')}
               <br />
-              POR CURIOSIDAD ↙
+              {t('POR CURIOSIDAD ↙')}
             </span>
           </div>
           <div className="lab-rows">
@@ -482,22 +508,22 @@ export default function Home() {
         </section>
 
         <section className="archive-door shell">
-          <span className="kicker">05 / Conversaciones y notas</span>
+          <span className="kicker">{t('05 / Conversaciones y notas')}</span>
           <div>
             <h2>
-              También
+              {t('También')}
               <br />
-              <em>lo cuento.</em>
+              <em>{t('lo cuento.')}</em>
             </h2>
             <p>
-              Diez conversaciones largas, charlas y artículos.
+              {t('Diez conversaciones largas, charlas y artículos.')}
               <br />
-              El contexto que no cabe en una bio.
+              {t('El contexto que no cabe en una bio.')}
             </p>
             <a
-              href="/archivo"
+              href={path('/archivo')}
               className="archive-arrow"
-              aria-label="Abrir el archivo de conversaciones y notas"
+              aria-label={t('Abrir el archivo de conversaciones y notas')}
             >
               <ArrowUpRight size={64} />
             </a>

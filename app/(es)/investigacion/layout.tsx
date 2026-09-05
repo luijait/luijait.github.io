@@ -1,9 +1,10 @@
 import type { Metadata } from 'next';
 export const metadata: Metadata = {
   title: 'Investigación — Luijait',
-  description:
-    'Siete trabajos en coautoría: CAI, CAIBench, fluency, evaluación y estrategia. Preguntas, contexto y acceso a los papers.',
-  alternates: { canonical: '/investigacion' },
+  alternates: {
+    canonical: '/investigacion/',
+    languages: { es: '/investigacion/', en: '/en/research/' },
+  },
 };
 export default function Layout({ children }: { children: React.ReactNode }) {
   return children;

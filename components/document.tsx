@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { Geist, Geist_Mono, Newsreader } from 'next/font/google';
-import './globals.css';
+import '@/app/globals.css';
+import { LocaleProvider } from '@/components/locale';
 const geistSans = Geist({
   variable: '--font-geist-sans',
   subsets: ['latin'],
@@ -17,24 +18,29 @@ const newsreader = Newsreader({
   style: ['normal', 'italic'],
   display: 'swap',
 });
-export const metadata: Metadata = {
-  metadataBase: new URL('https://luijait.luis-javier38024.chatgpt.site'),
+export const spanishMetadata: Metadata = {
+  metadataBase: new URL(
+    process.env.DEPLOY_TARGET === 'github'
+      ? 'https://luijait.github.io'
+      : 'https://luijait.luis-javier38024.chatgpt.site',
+  ),
   title: 'Luijait — IA en TryHackMe · Hace falta entender',
   description:
     'Luis Javier Navarrete Lozano, Luijait. IA y ciberseguridad en TryHackMe / NoScope. Mi historia, investigación, proyectos y conversaciones.',
   authors: [{ name: 'Luis Javier Navarrete Lozano' }],
-  alternates: { canonical: '/' },
+  alternates: { canonical: '/', languages: { es: '/', en: '/en/' } },
   icons: { icon: '/favicon.svg' },
 };
-export default function RootLayout({
+export default function DocumentLayout({
   children,
-}: Readonly<{ children: React.ReactNode }>) {
+  locale,
+}: Readonly<{ children: React.ReactNode; locale: 'es' | 'en' }>) {
   return (
-    <html lang="es">
+    <html lang={locale}>
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${newsreader.variable} antialiased`}
       >
-        {children}
+        <LocaleProvider locale={locale}>{children}</LocaleProvider>
       </body>
     </html>
   );
