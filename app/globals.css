@@ -3334,3 +3334,8 @@ button:focus-visible {
     transform: none !important;
   }
 }
+
+/* Names the published build so the stylesheet filename changes with it. */
+.site-nav {
+  --build: 2;
+}
