@@ -24,12 +24,16 @@ export function createSculpture(host: HTMLElement, onReady: () => void) {
   const scene = new THREE.Scene();
   const camera = new THREE.PerspectiveCamera(34, 1, 0.1, 40);
   camera.position.set(0, 0.2, 8.8);
-  const pmrem = new THREE.PMREMGenerator(renderer);
-  const room = new RoomEnvironment();
-  const environment = pmrem.fromScene(room, 0.04);
+  const makeEnvironment = () => {
+    const pmrem = new THREE.PMREMGenerator(renderer);
+    const room = new RoomEnvironment();
+    const map = pmrem.fromScene(room, 0.04);
+    room.dispose();
+    pmrem.dispose();
+    return map;
+  };
+  let environment = makeEnvironment();
   scene.environment = environment.texture;
-  room.dispose();
-  pmrem.dispose();
   scene.add(new THREE.HemisphereLight(0xffffff, 0x515156, 2));
   const key = new THREE.DirectionalLight(0xffffff, 4);
   key.position.set(-3, 4, 5);
@@ -225,8 +229,18 @@ export function createSculpture(host: HTMLElement, onReady: () => void) {
     frame = 0;
   };
   const contextRestored = () => {
-    delete host.dataset.lost;
-    schedule();
+    // Render targets lose their pixel contents along with the GPU context.
+    // Rebuild the reflection map instead of showing black metal on recovery.
+    try {
+      const recovered = makeEnvironment();
+      scene.environment = recovered.texture;
+      environment.dispose();
+      environment = recovered;
+      delete host.dataset.lost;
+      schedule();
+    } catch {
+      host.dataset.lost = 'true';
+    }
   };
   renderer.domElement.addEventListener('webglcontextlost', contextLost);
   renderer.domElement.addEventListener('webglcontextrestored', contextRestored);
