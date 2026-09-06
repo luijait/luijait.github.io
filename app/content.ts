@@ -43,12 +43,12 @@ export const cases = [
   {
     id: '0dai',
     name: '0dAI',
-    category: 'De prototipo a producto',
+    category: 'Machine learning · Modelos abiertos',
     period: '2023—2024',
-    title: 'Una necesidad real. Una idea compartida.',
+    title: 'Del fine-tuning a los pesos abiertos. Del modelo al producto.',
     intro:
-      'Una pregunta surgida trabajando en Omega se convirtió en un prototipo, y después en una herramienta utilizada por otras personas.',
-    role: 'Cofundador y CTO · Junto a Omega y el equipo',
+      'Fui cofundador y CTO de 0dAI y soy autor de sus modelos abiertos: trabajo con Mistral y Mixtral, variantes cuantizadas y publicaciones en Hugging Face como luijait.',
+    role: 'Cofundador y CTO · Autor de los modelos abiertos de 0dAI',
     chapters: [
       {
         label: '01 / El comienzo',
@@ -57,8 +57,8 @@ export const cases = [
       },
       {
         label: '02 / Mi aportación',
-        title: 'Construir y dirigir la parte técnica',
-        text: 'Fui cofundador y CTO: participé en el desarrollo y en la dirección técnica, desde las primeras pruebas hasta las decisiones sobre modelos, infraestructura y experiencia. Zerodapi, la API pública del proyecto, es una de las piezas de ese trabajo.',
+        title: 'Construir los modelos y dirigir la parte técnica',
+        text: 'Soy autor de los modelos abiertos publicados por 0dAI como luijait: 0dAI-7B, la familia 7.5B-v2 con variantes cuantizadas a 4 y 8 bpw, y 0dAI-8x7b-0761. El trabajo parte de Mistral y Mixtral e incluye fine-tuning, iteración con DPO y cuantización. Las fichas reconocen la infraestructura de Omega AI, y el historial público documenta mis publicaciones. Como cofundador y CTO también trabajé en la dirección técnica y en Zerodapi.',
       },
       {
         label: '03 / Después del prototipo',
@@ -67,6 +67,10 @@ export const cases = [
       },
     ],
     links: [
+      {
+        label: 'Mis modelos abiertos en Hugging Face',
+        url: 'https://huggingface.co/0dAI',
+      },
       {
         label: 'El origen, contado con Omega',
         url: 'https://www.elladodelmal.com/2024/03/0dai-un-modelo-ai-llm-para-hacer.html',
@@ -99,7 +103,7 @@ export const cases = [
       {
         label: '02 / Qué estamos construyendo',
         title: 'IA para evaluar y mejorar la seguridad',
-        text: 'NoScope desarrolla un producto de pentesting continuo asistido por agentes de IA, con supervisión humana. Formo parte del equipo de ingeniería de IA, en el punto donde investigación, desarrollo y producto se encuentran.',
+        text: 'NoScope desarrolla un producto de pentesting totalmente autónomo y continuo, basado en agentes de IA. Formo parte del equipo de ingeniería de IA, en el punto donde investigación, desarrollo y producto se encuentran.',
       },
       {
         label: '03 / Lo que me mueve',
@@ -209,7 +213,7 @@ export const chapters = [
     title: 'Cuando una pregunta se convierte en un producto.',
     paragraphs: [
       'En Omega AI, una necesidad práctica de seguridad abrió el camino a 0dAI. Con Omega y el equipo pasamos de hablar sobre una idea a construir un prototipo y un servicio. Fui cofundador y CTO, además de participar en su desarrollo.',
-      'El trabajo no terminó cuando el prototipo funcionó. Los usuarios cambiaron prioridades, aparecieron expectativas nuevas y hubo decisiones sobre infraestructura, modelos y experiencia. Esa etapa me dio muchas preguntas sobre lo que significa llevar una tecnología a un uso real.',
+      'También soy autor de los modelos abiertos de 0dAI publicados en Hugging Face como luijait: fine-tuning sobre Mistral y Mixtral, iteración con DPO y variantes cuantizadas. Esa parte de machine learning fue tan central como la experiencia de producto. Los usuarios cambiaron prioridades y trajeron decisiones sobre infraestructura, modelos y experiencia. Esa etapa me dio muchas preguntas sobre lo que significa llevar una tecnología a un uso real.',
     ],
     source: 'El origen de 0dAI, contado con Omega',
     url: 'https://www.elladodelmal.com/2024/03/0dai-un-modelo-ai-llm-para-hacer.html',

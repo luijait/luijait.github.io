@@ -31,11 +31,11 @@ const caseText = [
     ],
   },
   {
-    category: 'From prototype to product',
-    title: 'A real need. A shared idea.',
+    category: 'Machine learning · Open models',
+    title: 'From fine-tuning to open weights. From model to product.',
     intro:
-      'A question that came up while working at Omega became a prototype, then a tool that other people used.',
-    role: 'Cofounder and CTO · With Omega and the team',
+      'I was cofounder and CTO of 0dAI and am the author of its open models: work with Mistral and Mixtral, quantized variants and Hugging Face releases as luijait.',
+    role: 'Cofounder and CTO · Author of the open 0dAI models',
     chapters: [
       {
         label: '01 / The beginning',
@@ -44,8 +44,8 @@ const caseText = [
       },
       {
         label: '02 / My contribution',
-        title: 'Building and leading the technical work',
-        text: 'As cofounder and CTO, I contributed to development and technical direction: from the first experiments to decisions about models, infrastructure and user experience. Zerodapi, the project’s public API, is one part of that work.',
+        title: 'Building the models and leading the technical work',
+        text: 'I am the author of the open models published by 0dAI as luijait: 0dAI-7B, the 7.5B-v2 family with 4 and 8 bpw variants, and 0dAI-8x7b-0761. Built on Mistral and Mixtral, the work includes fine-tuning, iteration with DPO and quantization. The cards acknowledge Omega AI infrastructure, and the public history documents my releases. As cofounder and CTO, I also worked on technical direction and Zerodapi.',
       },
       {
         label: '03 / Beyond the prototype',
@@ -54,6 +54,7 @@ const caseText = [
       },
     ],
     links: [
+      'My open models on Hugging Face',
       'The origin, told with Omega',
       'Zerodapi · contribution',
       'A conversation about product development',
@@ -75,7 +76,7 @@ const caseText = [
       {
         label: '02 / What we are building',
         title: 'AI to assess and improve security',
-        text: 'NoScope is building a continuous pentesting product assisted by AI agents, with human oversight. I am part of the AI engineering team, where research, development and product meet.',
+        text: 'NoScope is building a fully autonomous, continuous pentesting product powered by AI agents. I am part of the AI engineering team, where research, development and product meet.',
       },
       {
         label: '03 / What drives me',
@@ -167,7 +168,7 @@ const chapterText = [
     title: 'When a question becomes a product.',
     paragraphs: [
       'At Omega AI, a practical security need opened the path to 0dAI. With Omega and the team, we went from discussing an idea to building a prototype and a service. I was cofounder and CTO, and also worked on its development.',
-      'The work did not end when the prototype worked. Users changed priorities, new expectations emerged, and we had decisions to make about infrastructure, models and experience. That chapter gave me a lot of questions about what it means to bring technology into real use.',
+      'I am also the author of the open 0dAI models published on Hugging Face as luijait: fine-tuning on Mistral and Mixtral, iteration with DPO and quantized variants. That machine learning work was as central as the product experience. Users changed priorities and brought decisions about infrastructure, models and experience. That chapter gave me a lot of questions about what it means to bring technology into real use.',
     ],
     source: 'The origin of 0dAI, told with Omega',
   },

@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import { createSceneRuntime } from '@/lib/scene-runtime';
 import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
 import { RoundedBoxGeometry } from 'three/addons/geometries/RoundedBoxGeometry.js';
 
@@ -76,20 +77,26 @@ export function createSculpture(host: HTMLElement, onReady: () => void) {
   const seed = new THREE.Mesh(new THREE.IcosahedronGeometry(0.37, 0), red);
   forms[0].add(seed);
 
-  const blocks: THREE.Mesh[] = [];
+  const dummy = new THREE.Object3D();
   const blockGeometry = new RoundedBoxGeometry(0.61, 0.61, 0.61, 3, 0.055);
+  const blockHomes: THREE.Vector3[][] = [[], [], []];
   for (let x = -1; x <= 1; x++)
     for (let y = -1; y <= 1; y++)
       for (let z = -1; z <= 1; z++) {
-        const block = new THREE.Mesh(
-          blockGeometry,
-          x === 0 && z === 1 ? red : y === -1 ? graphite : silver,
-        );
-        block.position.set(x * 0.76, y * 0.76, z * 0.76);
-        block.userData.home = block.position.clone();
-        blocks.push(block);
-        forms[1].add(block);
+        const group = x === 0 && z === 1 ? 0 : y === -1 ? 1 : 2;
+        blockHomes[group].push(new THREE.Vector3(x * 0.76, y * 0.76, z * 0.76));
       }
+  const blocks = blockHomes.map((homes, i) => {
+    const mesh = new THREE.InstancedMesh(
+      blockGeometry,
+      [red, graphite, silver][i],
+      homes.length,
+    );
+    mesh.instanceMatrix.setUsage(THREE.DynamicDrawUsage);
+    mesh.frustumCulled = false;
+    forms[1].add(mesh);
+    return mesh;
+  });
   forms[1].rotation.set(0.4, -0.6, 0.08);
 
   const latticeGeometry = new THREE.IcosahedronGeometry(1.68, 1);
@@ -111,13 +118,20 @@ export function createSculpture(host: HTMLElement, onReady: () => void) {
     );
   }
   const pointGeometry = new THREE.SphereGeometry(0.065, 12, 8);
-  unique.forEach((v, key) => {
-    const point = new THREE.Mesh(
+  const pointGroups: THREE.Vector3[][] = [[], []];
+  unique.forEach((v, key) => pointGroups[key.startsWith('0.') ? 0 : 1].push(v));
+  pointGroups.forEach((points, i) => {
+    const mesh = new THREE.InstancedMesh(
       pointGeometry,
-      key.startsWith('0.') ? red : silver,
+      i === 0 ? red : silver,
+      points.length,
     );
-    point.position.copy(v);
-    forms[2].add(point);
+    points.forEach((v, index) => {
+      dummy.position.copy(v);
+      dummy.updateMatrix();
+      mesh.setMatrixAt(index, dummy.matrix);
+    });
+    forms[2].add(mesh);
   });
   latticeGeometry.dispose();
   const core = new THREE.Mesh(new THREE.IcosahedronGeometry(0.54, 0), red);
@@ -133,100 +147,69 @@ export function createSculpture(host: HTMLElement, onReady: () => void) {
   assembly.add(satellite);
 
   let mode = 0,
-    playing = false,
-    visible = false,
-    disposed = false;
-  let frame = 0,
-    previous = 0,
-    time = 0;
-  let targetX = 0,
+    targetX = 0,
     targetY = 0;
   const weights = [1, 0, 0];
   forms[1].scale.setScalar(0.001);
   forms[2].scale.setScalar(0.001);
-
-  function draw(now: number) {
-    frame = 0;
-    if (disposed || !visible || document.hidden) {
-      previous = 0;
-      return;
-    }
-    const delta = Math.min(previous ? (now - previous) / 1000 : 0.016, 0.04);
-    previous = now;
-    if (playing) time += delta;
-    const ease = 1 - Math.exp(-delta * 6);
-    let settling = false;
-    forms.forEach((form, i) => {
-      const target = i === mode ? 1 : 0;
-      weights[i] = playing
-        ? THREE.MathUtils.lerp(weights[i], target, ease)
-        : target;
-      if (Math.abs(weights[i] - target) > 0.001) settling = true;
-      form.visible = weights[i] > 0.006;
-      form.scale.setScalar(Math.max(0.001, weights[i]));
-    });
-    assembly.rotation.x = playing
-      ? THREE.MathUtils.lerp(assembly.rotation.x, targetX * 0.25, ease)
-      : targetX * 0.25;
-    assembly.rotation.y = playing
-      ? THREE.MathUtils.lerp(
-          assembly.rotation.y,
-          targetY * 0.45 + time * 0.085,
-          ease,
-        )
-      : targetY * 0.45;
-    assembly.position.y = playing ? Math.sin(time * 0.6) * 0.07 : 0;
-    knot.rotation.z = -0.25 + time * 0.06;
-    seed.rotation.y = time * 0.25;
-    core.rotation.set(time * 0.12, time * 0.18, 0);
-    orbit.rotation.z = 0.25 + time * 0.045;
-    satellite.position.set(
-      Math.cos(time * 0.28) * 2.15,
-      Math.sin(time * 0.28) * 1.05,
-      Math.sin(time * 0.28) * 1.87,
-    );
-    const expand = 1 + (Math.sin(time * 0.65) * 0.5 + 0.5) * 0.24;
-    blocks.forEach((block) =>
-      block.position.copy(block.userData.home).multiplyScalar(expand),
-    );
-    renderer.render(scene, camera);
-    if (playing || settling) frame = requestAnimationFrame(draw);
-  }
-  const schedule = () => {
-    if (!frame && !disposed) frame = requestAnimationFrame(draw);
-  };
-  const resize = new ResizeObserver(() => {
-    const { width, height } = host.getBoundingClientRect();
-    if (!width || !height) return;
-    renderer.setSize(width, height);
-    camera.aspect = width / height;
-    camera.position.z = camera.aspect < 0.85 ? 10 : 8.8;
-    camera.updateProjectionMatrix();
-    schedule();
-  });
-  resize.observe(host);
-  const intersection = new IntersectionObserver(
-    ([entry]) => {
-      visible = entry.isIntersecting;
-      if (visible) schedule();
-      else {
-        cancelAnimationFrame(frame);
-        frame = 0;
-        previous = 0;
-      }
+  const runtime = createSceneRuntime(host, {
+    resize(width, height, ratio) {
+      renderer.setPixelRatio(ratio);
+      renderer.setSize(width, height);
+      camera.aspect = width / height;
+      camera.position.z = camera.aspect < 0.85 ? 10 : 8.8;
+      camera.updateProjectionMatrix();
     },
-    { rootMargin: '100px' },
-  );
-  intersection.observe(host);
-  const visibility = () => {
-    if (!document.hidden) schedule();
-  };
-  document.addEventListener('visibilitychange', visibility);
+    draw({ delta, time, motion: playing }) {
+      const ease = 1 - Math.exp(-delta * 6);
+      forms.forEach((form, i) => {
+        const target = i === mode ? 1 : 0;
+        weights[i] = playing
+          ? THREE.MathUtils.lerp(weights[i], target, ease)
+          : target;
+        form.visible = weights[i] > 0.006;
+        form.scale.setScalar(Math.max(0.001, weights[i]));
+      });
+      assembly.rotation.x = playing
+        ? THREE.MathUtils.lerp(assembly.rotation.x, targetX * 0.25, ease)
+        : targetX * 0.25;
+      assembly.rotation.y = playing
+        ? THREE.MathUtils.lerp(
+            assembly.rotation.y,
+            targetY * 0.45 + time * 0.085,
+            ease,
+          )
+        : targetY * 0.45;
+      assembly.position.y = playing ? Math.sin(time * 0.6) * 0.07 : 0;
+      knot.rotation.z = -0.25 + time * 0.06;
+      seed.rotation.y = time * 0.25;
+      core.rotation.set(time * 0.12, time * 0.18, 0);
+      orbit.rotation.z = 0.25 + time * 0.045;
+      satellite.position.set(
+        Math.cos(time * 0.28) * 2.15,
+        Math.sin(time * 0.28) * 1.05,
+        Math.sin(time * 0.28) * 1.87,
+      );
+      const expand = 1 + (Math.sin(time * 0.65) * 0.5 + 0.5) * 0.24;
+      if (forms[1].visible)
+        blocks.forEach((mesh, i) => {
+          blockHomes[i].forEach((home, index) => {
+            dummy.position.copy(home).multiplyScalar(expand);
+            dummy.updateMatrix();
+            mesh.setMatrixAt(index, dummy.matrix);
+          });
+          mesh.instanceMatrix.needsUpdate = true;
+        });
+      renderer.render(scene, camera);
+    },
+  });
   const contextLost = (event: Event) => {
     event.preventDefault();
     host.dataset.lost = 'true';
-    cancelAnimationFrame(frame);
-    frame = 0;
+    runtime.setEnabled(false);
+    // Release the old target while its context is lost, before a new one exists.
+    scene.environment = null;
+    environment.dispose();
   };
   const contextRestored = () => {
     // Render targets lose their pixel contents along with the GPU context.
@@ -234,10 +217,9 @@ export function createSculpture(host: HTMLElement, onReady: () => void) {
     try {
       const recovered = makeEnvironment();
       scene.environment = recovered.texture;
-      environment.dispose();
       environment = recovered;
       delete host.dataset.lost;
-      schedule();
+      runtime.setEnabled(true);
     } catch {
       host.dataset.lost = 'true';
     }
@@ -249,24 +231,18 @@ export function createSculpture(host: HTMLElement, onReady: () => void) {
   return {
     setMode(value: number) {
       mode = value;
-      schedule();
+      runtime.invalidate();
     },
     setPlaying(value: boolean) {
-      playing = value;
-      previous = 0;
-      schedule();
+      runtime.setMotion(value);
     },
     point(x: number, y: number) {
       targetX = y;
       targetY = x;
-      schedule();
+      runtime.invalidate();
     },
     dispose() {
-      disposed = true;
-      cancelAnimationFrame(frame);
-      resize.disconnect();
-      intersection.disconnect();
-      document.removeEventListener('visibilitychange', visibility);
+      runtime.dispose();
       renderer.domElement.removeEventListener('webglcontextlost', contextLost);
       renderer.domElement.removeEventListener(
         'webglcontextrestored',
@@ -274,6 +250,7 @@ export function createSculpture(host: HTMLElement, onReady: () => void) {
       );
       const geometries = new Set<THREE.BufferGeometry>();
       scene.traverse((object) => {
+        if (object instanceof THREE.InstancedMesh) object.dispose();
         if ('geometry' in object)
           geometries.add(object.geometry as THREE.BufferGeometry);
       });

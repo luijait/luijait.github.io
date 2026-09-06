@@ -6,10 +6,20 @@ import { useLocale } from '@/components/locale';
 import { Button } from '@/components/ui/button';
 import type { ObjectKind, ProjectObjectEngine } from '@/lib/project-object';
 
-export function ProjectObject({ kind }: { kind: ObjectKind }) {
+export function ProjectObject({
+  kind,
+  stage,
+  onStageChange,
+}: {
+  kind: ObjectKind;
+  stage?: number;
+  onStageChange?: (value: number) => void;
+}) {
   const { locale } = useLocale();
   const { playing } = useExperience();
-  const [selected, setSelected] = useState(0);
+  const [internalStage, setInternalStage] = useState(0);
+  const selected = stage ?? internalStage;
+  const setSelected = onStageChange ?? setInternalStage;
   const host = useRef<HTMLElement>(null);
   const engine = useRef<ProjectObjectEngine | null>(null);
   const current = useRef({ playing, selected });
@@ -50,8 +60,8 @@ export function ProjectObject({ kind }: { kind: ObjectKind }) {
   const steps =
     kind === 'lens'
       ? es
-        ? ['El sistema', 'Las piezas']
-        : ['The system', 'The parts']
+        ? ['Continuidad', 'Contexto', 'Autonomía']
+        : ['Continuity', 'Context', 'Autonomy']
       : es
         ? ['Necesidad', 'Prototipo', 'Personas']
         : ['Need', 'Prototype', 'People'];
@@ -59,12 +69,14 @@ export function ProjectObject({ kind }: { kind: ObjectKind }) {
     kind === 'lens'
       ? es
         ? [
-            'Modelos, herramientas y criterio humano. Mi trabajo está en su encuentro.',
+            'Modelos y agentes que trabajan de forma continua. Mi trabajo está en su ingeniería.',
             'Investigar, desarrollar y llevarlo a producto con el equipo de NoScope.',
+            'Estamos construyendo pentesting totalmente autónomo.',
           ]
         : [
-            'Models, tools and human judgment. My work sits where they meet.',
+            'Models and agents working continuously. My work is in their engineering.',
             'Research, development and product, with the NoScope team.',
+            'We are building fully autonomous pentesting.',
           ]
       : es
         ? [
@@ -100,11 +112,7 @@ export function ProjectObject({ kind }: { kind: ObjectKind }) {
         }
         onPointerMove={(event) => {
           if (!playing || event.pointerType !== 'mouse') return;
-          const box = event.currentTarget.getBoundingClientRect();
-          engine.current?.point(
-            ((event.clientX - box.left) / box.width) * 2 - 1,
-            ((event.clientY - box.top) / box.height) * 2 - 1,
-          );
+          engine.current?.pointClient(event.clientX, event.clientY);
         }}
         onPointerLeave={() => engine.current?.point(0, 0)}
       >
@@ -114,7 +122,9 @@ export function ProjectObject({ kind }: { kind: ObjectKind }) {
           <i />
         </div>
         <span className="object-coordinate" aria-hidden="true">
-          {kind === 'lens' ? '01 / HUMAN IN THE LOOP' : '03 / FROM ZERO TO ONE'}
+          {kind === 'lens'
+            ? '01 / AUTONOMOUS BY DESIGN'
+            : '03 / FROM ZERO TO ONE'}
         </span>
       </figure>
       <div className="object-toolbar">

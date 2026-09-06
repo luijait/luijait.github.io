@@ -3,6 +3,9 @@
 import { useLocale } from '@/components/locale';
 import { useState, type CSSProperties } from 'react';
 import { ArrowUpRight, ArrowRight, Plus, Eye, EyeOff } from 'lucide-react';
+import { NoScopeFeature } from '@/components/noscope-feature';
+import { OpenModels } from '@/components/open-models';
+import { CardChoreography } from '@/components/card-choreography';
 import { PortfolioHero } from '@/components/portfolio-hero';
 import { ProjectObject } from '@/components/project-object';
 import { ResearchAtlas } from '@/components/research-atlas';
@@ -24,6 +27,7 @@ export default function Home() {
   return (
     <>
       <Motion />
+      <CardChoreography />
       <Header />
       <main id="contenido">
         <PortfolioHero />
@@ -50,62 +54,53 @@ export default function Home() {
           </div>
           <WorkIndex />
           <div className="project-stack">
+            <NoScopeFeature />
             <article
-              className="stack-card thm-card"
-              id="tryhackme"
-              style={{ '--stack': 0 } as CSSProperties}
+              className="stack-card odai-card"
+              id="0dai"
+              style={{ '--stack': 1 } as CSSProperties}
             >
               <div className="card-top">
-                <span className="card-status">
-                  <i />
-                  {t('Mi trabajo actual')}
-                </span>
-                <span className="kicker">{t('La etapa actual')}</span>
+                <span className="kicker">{t('Cofundador y CTO · 0dAI')}</span>
+                <span className="kicker">2023—2024</span>
               </div>
-              <div className="thm-layout">
-                <div className="thm-description project-copy">
-                  <span className="project-overline">TryHackMe / NoScope</span>
-                  <h3>
+              <div className="odai-layout">
+                <div className="project-copy">
+                  <span className="project-overline">
                     {locale === 'es'
-                      ? 'Antes aprendía aquí.'
-                      : 'I used to learn here.'}
+                      ? 'Modelos abiertos · Cofundador y CTO'
+                      : 'Open models · Cofounder & CTO'}
+                  </span>
+                  <h3>
+                    {locale === 'es' ? 'Del modelo' : 'From model'}
                     <br />
-                    <em>
-                      {locale === 'es' ? 'Hoy construyo.' : 'Now I build.'}
-                    </em>
+                    <em>{locale === 'es' ? 'al producto.' : 'to product.'}</em>
                   </h3>
-                  <div className="role-label">
-                    <span>AI</span>
-                    <span>ENGINEER</span>
-                  </div>
                   <p>
-                    {t(
-                      'Antes resolvía máquinas en TryHackMe. Hoy construyo modelos y agentes con el equipo de NoScope. La misma curiosidad, desde el otro lado.',
-                    )}
+                    {locale === 'es'
+                      ? 'Fui cofundador y CTO de 0dAI, y soy autor de sus modelos abiertos. Del fine-tuning y la cuantización a una herramienta que otras personas podían utilizar.'
+                      : 'I was cofounder and CTO of 0dAI and am the author of its open models. From fine-tuning and quantization to a tool other people could use.'}
                   </p>
-                  <CaseReader caseId="noscope">
-                    {t('Mi etapa actual')}
-                    <ArrowUpRight size={20} />
+                  <CaseReader caseId="0dai">
+                    {t('Mirar dentro')}
+                    <Plus size={20} />
                   </CaseReader>
-                  <OutLink
-                    href="https://www.noscope.com/company"
-                    className="card-source"
-                  >
-                    {t('Conocer al equipo')}
-                  </OutLink>
                 </div>
-                <ProjectObject kind="lens" />
+                <ProjectObject kind="layers" />
               </div>
+              <OpenModels />
               <div className="card-bottom">
-                <span>TryHackMe / NoScope</span>
-                <span>{t('Investigación · Producto · Ciberseguridad')}</span>
-                <span>01 / 04</span>
+                <span>{t('De la propuesta al uso real')}</span>
+                <span>
+                  {t('Iniciativa personal · Construcción compartida')}
+                </span>
+                <span>02 / 04</span>
               </div>
             </article>
             <article
               className="stack-card cai-card"
               id="cai"
-              style={{ '--stack': 1 } as CSSProperties}
+              style={{ '--stack': 2 } as CSSProperties}
             >
               <div className="card-top">
                 <span className="kicker">
@@ -140,45 +135,6 @@ export default function Home() {
                 <a href={path('/investigacion')}>
                   {t('Explorar las 7 publicaciones ↗')}
                 </a>
-                <span>02 / 04</span>
-              </div>
-            </article>
-            <article
-              className="stack-card odai-card"
-              id="0dai"
-              style={{ '--stack': 2 } as CSSProperties}
-            >
-              <div className="card-top">
-                <span className="kicker">{t('Cofundador y CTO · 0dAI')}</span>
-                <span className="kicker">2023—2024</span>
-              </div>
-              <div className="odai-layout">
-                <div className="project-copy">
-                  <span className="project-overline">
-                    {t('El primer producto')}
-                  </span>
-                  <h3>
-                    {t('Una idea.')}
-                    <br />
-                    <em>{t('Luego, usuarios.')}</em>
-                  </h3>
-                  <p>
-                    {t(
-                      'Una necesidad en Omega se convirtió, junto al equipo, en un prototipo y un servicio.',
-                    )}
-                  </p>
-                  <CaseReader caseId="0dai">
-                    {t('Mirar dentro')}
-                    <Plus size={20} />
-                  </CaseReader>
-                </div>
-                <ProjectObject kind="layers" />
-              </div>
-              <div className="card-bottom">
-                <span>{t('De la propuesta al uso real')}</span>
-                <span>
-                  {t('Iniciativa personal · Construcción compartida')}
-                </span>
                 <span>03 / 04</span>
               </div>
             </article>

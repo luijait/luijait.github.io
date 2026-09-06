@@ -17,6 +17,10 @@ Instalar con `npm ci` y ejecutar `npm run dev`. Compilar con `npm run build`; co
 - `components/portfolio-hero.tsx`: portada y galería con fuentes.
 - `components/sculpture.tsx`, `lib/sculpture.ts`: tres formas 3D (explorar, construir, comprender), creadas con Three.js y cargadas cuando se aproxima la escena. Los controles de giro funcionan con teclado y pantalla táctil.
 - `components/project-object.tsx`, `lib/project-object.ts`: escenas propias de NoScope y 0dAI. Anillos que se separan y módulos que se despliegan; combinan selección, giro, puntero y posición de lectura. Cada escena carga cerca del viewport, se suspende fuera de él y reconstruye sus reflejos tras recuperar el contexto gráfico.
+- `lib/scene-runtime.ts`: reloj compartido para las escenas visibles, con límite de 60 Hz en escritorio y 30 Hz con puntero táctil. Reduce la resolución ante presión sostenida; mide posiciones en eventos de desplazamiento y tamaño, sin lecturas de layout en cada fotograma. Las piezas repetidas usan instancias y geometrías compartidas.
+- `components/noscope-feature.tsx`: proyecto principal, con el mensaje de pentesting totalmente autónomo, tres perspectivas sincronizadas con su escultura y la aportación de Luis como AI Engineer.
+- `components/open-models.tsx`, `app/open-models.ts`: cinco repositorios públicos de 0dAI, incluidos modelos y variantes cuantizadas. El selector enlaza cada ficha y su historial de publicación; la figura CSS 3D es una interpretación visual de las familias y formatos.
+- `components/card-choreography.tsx`, `app/work.css`: entradas escalonadas de las tarjetas y movimiento de las figuras, sujeto a visibilidad, pausa global y preferencia de movimiento reducido.
 - `components/research-atlas.tsx`: siete preguntas seleccionables, conectadas con sus papers. Es una lectura temática del contenido existente, no una red de citas ni una clasificación de resultados.
 - `components/story-prelude.tsx`: recorrido fotográfico con fuentes originales y accesos a los siete capítulos de la biografía.
 - `components/archive-feature.tsx`: tres conversaciones para entrar por comienzos, producto o etapa actual. El reproductor de YouTube se carga solo al pulsar reproducir; conserva el enlace externo y restaura el foco al cerrarse.
@@ -37,5 +41,7 @@ Para GitHub Pages, ejecutar `DEPLOY_TARGET=github npm run build` y después `nod
 ## Límites editoriales
 
 Los papers son trabajos en coautoría de la etapa de Alias Robotics. Las fechas de los proyectos no pretenden fijar fechas contractuales. La formación distingue cursos y credenciales de estudiante de certificaciones profesionales. El contacto utiliza los perfiles públicos actuales de LinkedIn y X.
+
+La autoría de los modelos de 0dAI procede del relato de Luis y de los historiales públicos de los cinco repositorios, consultados el 6 de septiembre de 2026: sus commits identifican a `luijait`. Las fichas documentan las bases Mistral/Mixtral y la infraestructura de Omega AI. Se presentan como pesos abiertos, sin atribuir a Luis el entrenamiento original de las arquitecturas base. Las fuentes de NoScope son su [producto](https://www.noscope.com/) y su [equipo](https://www.noscope.com/company); la autonomía completa también fue confirmada por Luis. No se incluyen métricas comerciales ni resultados de evaluaciones no comprobados.
 
 Los recuerdos de 2012–2020, la libreta de C, las distribuciones de Linux y las cientos de máquinas resueltas proceden del relato personal de Luis. El portfolio utiliza el nombre Omega para ese colaborador, por indicación de Luis. Los experimentos de LunarLander y Space Invaders enlazan a las fichas publicadas de los modelos; el de Atari se identifica como trabajo del curso Deep RL de Hugging Face.

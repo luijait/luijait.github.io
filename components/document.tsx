@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { Geist, Geist_Mono, Newsreader } from 'next/font/google';
 import '@/app/globals.css';
 import '@/app/editorial.css';
+import '@/app/work.css';
 import { LocaleProvider } from '@/components/locale';
 import { ExperienceProvider } from '@/components/experience';
 const geistSans = Geist({

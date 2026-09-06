@@ -6,8 +6,8 @@ import { useLocale } from '@/components/locale';
 
 const projects = [
   { id: 'tryhackme', label: 'TryHackMe / NoScope' },
+  { id: '0dai', label: '0dAI / ML' },
   { id: 'cai', label: 'CAI / CAIBench' },
-  { id: '0dai', label: '0dAI' },
   { id: 'blurtain', label: 'Blurtain' },
 ];
 
