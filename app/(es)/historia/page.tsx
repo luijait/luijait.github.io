@@ -1,4 +1,5 @@
 'use client';
+// oxlint-disable next/no-img-element -- Static Pages export: locally hosted images have explicit dimensions and lazy loading.
 import { useLocale } from '@/components/locale';
 import { useEffect, useState } from 'react';
 import { ArrowDown, ArrowUpRight } from 'lucide-react';
@@ -10,7 +11,7 @@ import {
 } from '@/components/ui/accordion';
 import { Header, Footer, Motion, OutLink } from '@/components/portfolio';
 export default function Story() {
-  const { t, path, content } = useLocale();
+  const { t, path, content, portraits, locale } = useLocale();
   const { chapters, courses } = content;
   const [active, setActive] = useState(0);
   useEffect(() => {
@@ -85,6 +86,17 @@ export default function Story() {
                 </a>
               ))}
             </nav>
+            <div className="chapter-position" aria-hidden="true">
+              <span>{String(active + 1).padStart(2, '0')}</span>
+              <span>/ 07</span>
+              <div>
+                <i
+                  style={{
+                    transform: `scaleX(${(active + 1) / chapters.length})`,
+                  }}
+                />
+              </div>
+            </div>
           </aside>
           <div className="biography-text">
             {chapters.map((chapter, i) => (
@@ -92,6 +104,7 @@ export default function Story() {
                 id={`historia-${i}`}
                 data-chapter={i}
                 className="biography-chapter"
+                data-enter
                 key={chapter.era}
               >
                 <span className="kicker">
@@ -106,6 +119,40 @@ export default function Story() {
                     {chapter.source}
                   </OutLink>
                 )}
+                {(i === 3 || i === 5) &&
+                  (() => {
+                    const photo = portraits[i === 3 ? 0 : 2];
+                    return (
+                      <figure className="chapter-photo">
+                        <a
+                          href={photo.source}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          <img
+                            src={photo.src}
+                            alt={photo.alt}
+                            width={photo.width}
+                            height={photo.height}
+                            loading="lazy"
+                          />
+                        </a>
+                        <figcaption>
+                          <span>
+                            {photo.year} / {photo.label}
+                          </span>
+                          <a
+                            href={photo.source}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                          >
+                            {locale === 'es' ? 'Ver la fuente' : 'View source'}
+                            <ArrowUpRight size={14} />
+                          </a>
+                        </figcaption>
+                      </figure>
+                    );
+                  })()}
               </article>
             ))}
             <Accordion className="education">

@@ -2,6 +2,7 @@
 import { useLocale } from '@/components/locale';
 import { useEffect, useState } from 'react';
 import { ArrowUpRight } from 'lucide-react';
+import { Sculpture } from '@/components/sculpture';
 import {
   Accordion,
   AccordionItem,
@@ -16,7 +17,7 @@ import {
   CaseReader,
 } from '@/components/portfolio';
 export default function Research() {
-  const { t, path, content } = useLocale();
+  const { t, path, content, locale } = useLocale();
   const { papers } = content;
   const [expanded, setExpanded] = useState<string[]>([]);
   useEffect(() => {
@@ -44,20 +45,22 @@ export default function Research() {
           <span className="kicker">
             {t('2025—2026 / Siete preprints en coautoría')}
           </span>
-          <h1>
-            {t('De construir')}
-            <br />
-            <em>{t('a comprender.')}</em>
-          </h1>
-          <div className="inner-intro">
-            <p>
-              {t(
-                'Una línea de investigación que conecta sistemas, formación, evaluación y estrategia. Leer, implementar y contrastar en equipo.',
-              )}
-            </p>
-            <span className="research-total" aria-label={t('Siete trabajos')}>
-              07
-            </span>
+          <div className="research-hero-layout">
+            <div>
+              <h1>
+                {t('De construir')}
+                <br />
+                <em>{t('a comprender.')}</em>
+              </h1>
+              <div className="inner-intro">
+                <p>
+                  {t(
+                    'Una línea de investigación que conecta sistemas, formación, evaluación y estrategia. Leer, implementar y contrastar en equipo.',
+                  )}
+                </p>
+              </div>
+            </div>
+            <Sculpture compact initialMode={2} />
           </div>
         </section>
         <section
@@ -76,6 +79,26 @@ export default function Research() {
               <ArrowUpRight size={18} />
             </CaseReader>
           </div>
+          <nav
+            className="research-index"
+            aria-label={
+              locale === 'es' ? 'Índice de publicaciones' : 'Publication index'
+            }
+          >
+            {papers.map((paper, index) => (
+              <a
+                href={`#paper-${paper.id}`}
+                key={paper.id}
+                aria-current={
+                  expanded.includes(paper.id) ? 'location' : undefined
+                }
+              >
+                <span>0{index + 1}</span>
+                <span>{paper.tag}</span>
+                <ArrowUpRight size={13} aria-hidden="true" />
+              </a>
+            ))}
+          </nav>
           <Accordion
             className="publication-list"
             value={expanded}

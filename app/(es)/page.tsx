@@ -1,4 +1,5 @@
 'use client';
+// oxlint-disable next/no-img-element -- Static Pages export: locally hosted images have explicit dimensions and lazy loading.
 import { useLocale } from '@/components/locale';
 import { useState, type PointerEvent, type CSSProperties } from 'react';
 import {
@@ -9,6 +10,9 @@ import {
   Eye,
   EyeOff,
 } from 'lucide-react';
+import { PortfolioHero } from '@/components/portfolio-hero';
+import { WorkIndex } from '@/components/work-index';
+import { JourneyDock } from '@/components/journey-dock';
 import { Switch } from '@/components/ui/switch';
 import {
   Header,
@@ -40,7 +44,7 @@ function resetTilt(event: PointerEvent<HTMLElement>) {
 }
 
 export default function Home() {
-  const { t, path, content, portraits } = useLocale();
+  const { t, path, content } = useLocale();
   const { papers, experiments } = content;
   const [protectedView, setProtectedView] = useState(true);
   return (
@@ -48,86 +52,7 @@ export default function Home() {
       <Motion />
       <Header />
       <main id="contenido">
-        <section className="hero-poster shell">
-          <div className="hero-topline">
-            <h1 className="kicker">Luis Javier Navarrete Lozano</h1>
-            <span className="hero-date-range">
-              2023 <span>—</span> 2026
-            </span>
-          </div>
-          <div className="photo-sequence-wrap">
-            <ol
-              className="photo-sequence"
-              aria-label={t('Imágenes a lo largo de los años')}
-            >
-              {portraits.map((photo, index) => (
-                <li
-                  className="photo-year"
-                  key={photo.year}
-                  style={{ '--index': index } as CSSProperties}
-                >
-                  <a
-                    href={photo.source}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="photo-print"
-                    aria-label={`${photo.year} · ${photo.label}. ${t('Abrir la fuente.')}`}
-                  >
-                    <div className={`photo-frame crop-${photo.crop}`}>
-                      <img
-                        src={photo.src}
-                        alt={photo.alt}
-                        width={photo.width}
-                        height={photo.height}
-                        fetchPriority={index === 0 ? 'high' : 'auto'}
-                      />
-                      <span className="photo-source-arrow" aria-hidden="true">
-                        <ArrowUpRight size={18} />
-                      </span>
-                    </div>
-                    <div className="photo-note">
-                      <time dateTime={photo.year}>{photo.year}</time>
-                      <span>
-                        <strong>{photo.label}</strong>
-                        <small>{photo.detail}</small>
-                      </span>
-                    </div>
-                  </a>
-                </li>
-              ))}
-            </ol>
-          </div>
-          <div className="hero-copy">
-            <p>
-              {t('Investigo IA.')}
-              <br />
-              {t('Construyo modelos y agentes.')}
-              <br />
-              <span>{t('Me gusta mirar dentro.')}</span>
-            </p>
-            <div className="hero-current">
-              <span className="kicker">AI engineer</span>
-              <strong>
-                TryHackMe <span>/ NoScope</span>
-              </strong>
-            </div>
-            <a className="round-link" href="#trabajo">
-              <span className="round-arrow">
-                <ArrowDown size={22} />
-              </span>
-              <span>{t('Explorar el trabajo')}</span>
-            </a>
-          </div>
-          <div className="hero-caption">
-            <span className="kicker">
-              {t('Todo empezó con una pequeña pantalla.')}
-            </span>
-            <a href={path('/historia')}>
-              {t('Esta es mi historia')}
-              <ArrowUpRight size={16} />
-            </a>
-          </div>
-        </section>
+        <PortfolioHero />
 
         <section
           className="work-section shell"
@@ -149,6 +74,7 @@ export default function Home() {
               {t('y proyectos por mi cuenta.')}
             </p>
           </div>
+          <WorkIndex />
           <div className="project-stack">
             <article
               className="stack-card thm-card"
@@ -202,6 +128,7 @@ export default function Home() {
             </article>
             <article
               className="stack-card cai-card"
+              id="cai"
               style={{ '--stack': 1 } as CSSProperties}
               onPointerMove={tilt}
               onPointerLeave={resetTilt}
@@ -266,6 +193,7 @@ export default function Home() {
             </article>
             <article
               className="stack-card odai-card"
+              id="0dai"
               style={{ '--stack': 2 } as CSSProperties}
             >
               <div className="card-top">
@@ -325,6 +253,7 @@ export default function Home() {
             </article>
             <article
               className="stack-card blurtain-card"
+              id="blurtain"
               style={{ '--stack': 3 } as CSSProperties}
             >
               <div className="card-top">
@@ -398,7 +327,7 @@ export default function Home() {
           </div>
         </section>
 
-        <section className="person-section shell" data-enter>
+        <section className="person-section shell" id="persona" data-enter>
           <div className="person-photo">
             <img
               src="/portraits/x-current.jpg"
@@ -439,7 +368,7 @@ export default function Home() {
           </span>
         </section>
 
-        <section className="research-door">
+        <section className="research-door" id="publicaciones">
           <div className="shell research-door-inner">
             <a
               href={path('/investigacion')}
@@ -507,7 +436,7 @@ export default function Home() {
           </div>
         </section>
 
-        <section className="archive-door shell">
+        <section className="archive-door shell" id="conversaciones">
           <span className="kicker">{t('05 / Conversaciones y notas')}</span>
           <div>
             <h2>
@@ -531,6 +460,7 @@ export default function Home() {
         </section>
       </main>
       <Footer />
+      <JourneyDock />
     </>
   );
 }

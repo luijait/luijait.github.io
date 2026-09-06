@@ -1,8 +1,15 @@
 'use client';
 import { useLocale, localizedPath } from '@/components/locale';
-import { useEffect, useState, type ReactNode, type CSSProperties } from 'react';
-import { ArrowUpRight, ArrowLeft, X, Plus } from 'lucide-react';
+import {
+  useEffect,
+  useRef,
+  useState,
+  type ReactNode,
+  type CSSProperties,
+} from 'react';
+import { ArrowUpRight, ArrowLeft, X, Plus, Link2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { MotionToggle, useExperience } from '@/components/experience';
 import {
   Sheet,
   SheetTrigger,
@@ -60,31 +67,43 @@ const socialProfiles = [
     path: 'M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12',
   },
   {
-    id: 'mastodon',
-    name: 'Mastodon',
+    id: 'links',
+    name: 'Todos mis enlaces',
     href: 'https://privacidad.me/@luijait',
-    path: 'M23.268 5.313c-.35-2.578-2.617-4.61-5.304-5.004C17.51.242 15.792 0 11.813 0h-.03c-3.98 0-4.835.242-5.288.309C3.882.692 1.496 2.518.917 5.127.64 6.412.61 7.837.661 9.143c.074 1.874.088 3.745.26 5.611.118 1.24.325 2.47.62 3.68.55 2.237 2.777 4.098 4.96 4.857 2.336.792 4.849.923 7.256.38.265-.061.527-.132.786-.213.585-.184 1.27-.39 1.774-.753a.057.057 0 0 0 .023-.043v-1.809a.052.052 0 0 0-.02-.041.053.053 0 0 0-.046-.01 20.282 20.282 0 0 1-4.709.545c-2.73 0-3.463-1.284-3.674-1.818a5.593 5.593 0 0 1-.319-1.433.053.053 0 0 1 .066-.054c1.517.363 3.072.546 4.632.546.376 0 .75 0 1.125-.01 1.57-.044 3.224-.124 4.768-.422.038-.008.077-.015.11-.024 2.435-.464 4.753-1.92 4.989-5.604.008-.145.03-1.52.03-1.67.002-.512.167-3.63-.024-5.545zm-3.748 9.195h-2.561V8.29c0-1.309-.55-1.976-1.67-1.976-1.23 0-1.846.79-1.846 2.35v3.403h-2.546V8.663c0-1.56-.617-2.35-1.848-2.35-1.112 0-1.668.668-1.67 1.977v6.218H4.822V8.102c0-1.31.337-2.35 1.011-3.12.696-.77 1.608-1.164 2.74-1.164 1.311 0 2.302.5 2.962 1.498l.638 1.06.638-1.06c.66-.999 1.65-1.498 2.96-1.498 1.13 0 2.043.395 2.74 1.164.675.77 1.012 1.81 1.012 3.12z',
+    path: '',
   },
 ];
 export function SocialLinks() {
-  const { t } = useLocale();
+  const { t, locale } = useLocale();
   return (
-    <div className="social-links" aria-label={t('Perfiles')} role="navigation">
+    <nav className="social-links" aria-label={t('Perfiles')}>
       {socialProfiles.map((profile) => (
         <a
           key={profile.id}
           href={profile.href}
           target="_blank"
           rel="noopener noreferrer me"
-          aria-label={profile.name}
-          title={profile.name}
+          aria-label={
+            profile.id === 'links' && locale === 'en'
+              ? 'All my links'
+              : profile.name
+          }
+          title={
+            profile.id === 'links' && locale === 'en'
+              ? 'All my links'
+              : profile.name
+          }
         >
-          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-            <path d={profile.path} />
-          </svg>
+          {profile.id === 'links' ? (
+            <Link2 size={18} aria-hidden="true" />
+          ) : (
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path d={profile.path} />
+            </svg>
+          )}
         </a>
       ))}
-    </div>
+    </nav>
   );
 }
 export function Header({ active = 'trabajo' }: { active?: string }) {
@@ -95,7 +114,7 @@ export function Header({ active = 'trabajo' }: { active?: string }) {
       <a className="skip-link" href="#contenido">
         {t('Saltar al contenido')}
       </a>
-      <header className="site-nav shell">
+      <header className="site-nav shell" id="inicio">
         <div className="brand-group">
           <a
             className="brand"
@@ -148,12 +167,9 @@ export function Header({ active = 'trabajo' }: { active?: string }) {
           ))}
         </nav>
         <div className="nav-utilities">
+          <MotionToggle />
           <SocialLinks />
-          <div
-            className="language-links"
-            role="navigation"
-            aria-label={t('Idioma')}
-          >
+          <nav className="language-links" aria-label={t('Idioma')}>
             {(['es', 'en'] as const).map((language) => (
               <a
                 key={language}
@@ -169,7 +185,7 @@ export function Header({ active = 'trabajo' }: { active?: string }) {
                 {language.toUpperCase()}
               </a>
             ))}
-          </div>
+          </nav>
           <a className="nav-contact" href="#contacto">
             {t('Hablemos')}
             <ArrowUpRight size={16} />
@@ -216,7 +232,7 @@ export function Footer() {
             LinkedIn
           </OutLink>
           <OutLink href="https://github.com/luijait">GitHub</OutLink>
-          <a href="#">{t('Volver arriba ↑')}</a>
+          <a href="#inicio">{t('Volver arriba ↑')}</a>
           <span>© 2026</span>
         </div>
       </div>
@@ -224,10 +240,10 @@ export function Footer() {
   );
 }
 export function Motion() {
+  const { playing } = useExperience();
   useEffect(() => {
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
     const root = document.documentElement;
-    root.classList.add('motion-ready');
+    if (playing) root.classList.add('motion-ready');
     const observer = new IntersectionObserver(
       (entries) => {
         for (const e of entries)
@@ -239,7 +255,9 @@ export function Motion() {
       { threshold: 0.07 },
     );
     document
-      .querySelectorAll('[data-enter]')
+      .querySelectorAll(
+        '[data-enter], .biography-chapter, .publication, .lab-row, .episode, .writing-record',
+      )
       .forEach((el) => observer.observe(el));
     let frame = 0;
     const update = () => {
@@ -260,7 +278,7 @@ export function Motion() {
       cancelAnimationFrame(frame);
       window.removeEventListener('scroll', update);
     };
-  }, []);
+  }, [playing]);
   return <div className="read-line" aria-hidden="true" />;
 }
 export function CaseReader({
@@ -274,6 +292,24 @@ export function CaseReader({
 }) {
   const { t, content } = useLocale();
   const item = content.cases.find((c) => c.id === caseId) || content.cases[0];
+  const reader = useRef<HTMLDivElement>(null);
+  const { playing } = useExperience();
+  const readChapter = (index: number) => {
+    const pane = reader.current;
+    const chapter =
+      pane?.querySelectorAll<HTMLElement>('.reader-chapter')[index];
+    if (pane && chapter) {
+      pane.scrollTo({
+        top:
+          chapter.getBoundingClientRect().top -
+          pane.getBoundingClientRect().top +
+          pane.scrollTop -
+          20,
+        behavior: playing ? 'smooth' : 'instant',
+      });
+      chapter.focus({ preventScroll: true });
+    }
+  };
   return (
     <Sheet>
       <SheetTrigger
@@ -300,7 +336,7 @@ export function CaseReader({
             <X size={22} />
           </SheetClose>
         </div>
-        <div className="reader-scroll">
+        <div className="reader-scroll" ref={reader}>
           <SheetHeader className="reader-header">
             <span className="kicker">{item.category}</span>
             <SheetTitle className="reader-title">{item.name}</SheetTitle>
@@ -308,11 +344,23 @@ export function CaseReader({
               {item.intro}
             </SheetDescription>
             <p className="reader-role">{item.role}</p>
+            <fieldset
+              className="reader-index"
+              aria-label={t('El trabajo y su contexto')}
+            >
+              {item.chapters.map((chapter, index) => (
+                <button key={chapter.label} onClick={() => readChapter(index)}>
+                  {chapter.label}
+                  <ArrowUpRight size={13} aria-hidden="true" />
+                </button>
+              ))}
+            </fieldset>
           </SheetHeader>
           <div>
             {item.chapters.map((chapter, index) => (
               <section
                 className="reader-chapter"
+                tabIndex={-1}
                 key={chapter.label}
                 style={{ '--delay': `${index * 75}ms` } as CSSProperties}
               >

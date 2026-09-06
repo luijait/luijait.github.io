@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { Geist, Geist_Mono, Newsreader } from 'next/font/google';
 import '@/app/globals.css';
 import { LocaleProvider } from '@/components/locale';
+import { ExperienceProvider } from '@/components/experience';
 const geistSans = Geist({
   variable: '--font-geist-sans',
   subsets: ['latin'],
@@ -40,7 +41,9 @@ export default function DocumentLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${newsreader.variable} antialiased`}
       >
-        <LocaleProvider locale={locale}>{children}</LocaleProvider>
+        <LocaleProvider locale={locale}>
+          <ExperienceProvider>{children}</ExperienceProvider>
+        </LocaleProvider>
       </body>
     </html>
   );
