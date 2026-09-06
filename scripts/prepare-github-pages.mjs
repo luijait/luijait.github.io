@@ -27,7 +27,7 @@ for (const route of routes) {
   ) {
     throw new Error(`Incomplete or incorrectly localized export: ${route}`);
   }
-  if (!html.includes('https://luijait.es')) {
+  if (!html.includes('https://luijait.github.io')) {
     throw new Error(`Incorrect publication origin: ${route}`);
   }
   if (route !== '/') {
@@ -37,5 +37,4 @@ for (const route of routes) {
   }
 }
 await writeFile(resolve(directory, '.nojekyll'), '');
-await writeFile(resolve(directory, 'CNAME'), 'luijait.es\n');
 console.log(`Prepared ${routes.length} complete pages in Spanish and English.`);
