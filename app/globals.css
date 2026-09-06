@@ -292,6 +292,13 @@ button:focus-visible {
   .nav-utilities .nav-contact {
     display: none;
   }
+  .social-links a {
+    min-width: 26px;
+  }
+  .social-links svg {
+    height: 15px;
+    width: 15px;
+  }
 }
 .card-status i,
 .contact-status i {
