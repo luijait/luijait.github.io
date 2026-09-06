@@ -1,5 +1,6 @@
 'use client';
 // oxlint-disable next/no-img-element -- Static Pages export: locally hosted images have explicit dimensions and lazy loading.
+import { StoryPrelude } from '@/components/story-prelude';
 import { useLocale } from '@/components/locale';
 import { useEffect, useState } from 'react';
 import { ArrowDown, ArrowUpRight } from 'lucide-react';
@@ -57,6 +58,7 @@ export default function Story() {
             </a>
           </div>
         </section>
+        <StoryPrelude />
         <section id="recorrido" className="biography shell">
           <aside className="biography-rail">
             <img

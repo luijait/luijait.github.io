@@ -1,4 +1,5 @@
 'use client';
+import { ArchiveFeature } from '@/components/archive-feature';
 import { useLocale } from '@/components/locale';
 import { Fragment } from 'react';
 import { ArrowUpRight, Play } from 'lucide-react';
@@ -49,6 +50,7 @@ export default function Archive() {
           </div>
         </section>
         <section className="archive-body shell">
+          <ArchiveFeature />
           <Tabs defaultValue="conversaciones" className="archive-tabs">
             <TabsList
               variant="line"

@@ -16,15 +16,21 @@ Instalar con `npm ci` y ejecutar `npm run dev`. Compilar con `npm run build`; co
 - `components/portfolio.tsx`: navegación, contacto, movimiento y lector de proyectos con índice interno.
 - `components/portfolio-hero.tsx`: portada y galería con fuentes.
 - `components/sculpture.tsx`, `lib/sculpture.ts`: tres formas 3D (explorar, construir, comprender), creadas con Three.js y cargadas cuando se aproxima la escena. Los controles de giro funcionan con teclado y pantalla táctil.
+- `components/project-object.tsx`, `lib/project-object.ts`: escenas propias de NoScope y 0dAI. Anillos que se separan y módulos que se despliegan; combinan selección, giro, puntero y posición de lectura. Cada escena carga cerca del viewport, se suspende fuera de él y reconstruye sus reflejos tras recuperar el contexto gráfico.
+- `components/research-atlas.tsx`: siete preguntas seleccionables, conectadas con sus papers. Es una lectura temática del contenido existente, no una red de citas ni una clasificación de resultados.
+- `components/story-prelude.tsx`: recorrido fotográfico con fuentes originales y accesos a los siete capítulos de la biografía.
+- `components/archive-feature.tsx`: tres conversaciones para entrar por comienzos, producto o etapa actual. El reproductor de YouTube se carga solo al pulsar reproducir; conserva el enlace externo y restaura el foco al cerrarse.
+- `components/lab-notebook.tsx`: cinco proyectos con apuntes visuales del concepto y enlaces a las fuentes originales. Las ilustraciones no representan capturas del producto ni ejecuciones de modelos.
 - `components/experience.tsx`: pausa global persistente y preferencia de movimiento reducido. La escena se detiene al salir de pantalla o al ocultar la pestaña; hay una alternativa tipográfica cuando WebGL no está disponible.
 - `components/work-index.tsx`, `components/journey-dock.tsx`: índices de proyectos y secciones, con seguimiento de la posición de lectura.
 - `app/globals.css`: composición, tipografía, interacciones y adaptación a móvil, teclado y movimiento reducido.
+- `app/editorial.css`: escenas de proyectos, mapa de investigación, recorrido fotográfico, reproductor y cuaderno del laboratorio.
 
 Las fotografías se conservan intactas y se encuadran mediante CSS. Sus fuentes y fechas están en `PHOTO-CREDITS.md`. El avatar de X fue consultado el 6 de septiembre de 2026; ese año indica el perfil actual, no una fecha de captura conocida. La demostración de privacidad usa texto ficticio y no reproduce una captura de Blurtain.
 
 ## Publicación
 
-El proyecto mantiene su identificador de Sites en `.openai/hosting.json`. La versión desplegada se publica desde una revisión de Git, con el resultado de la compilación empaquetado mediante el helper de Sites. Las credenciales nunca forman parte del repositorio. El flujo de publicación activo descrito a continuación utiliza GitHub Pages.
+El proyecto conserva su identificador de Sites en `.openai/hosting.json`. El flujo de publicación activo utiliza GitHub Pages y no requiere modificar la configuración de dominios. Las credenciales nunca forman parte del repositorio.
 
 Para GitHub Pages, ejecutar `DEPLOY_TARGET=github npm run build` y después `node scripts/prepare-github-pages.mjs`. El segundo paso verifica las ocho páginas y los archivos referenciados, e incorpora índices de directorio para sus URLs. El artefacto incluye `CNAME` para el dominio actual, `luijait.es`. El flujo `.github/workflows/pages.yml` realiza ambos pasos y publica en `luijait/luijait.github.io` desde `main`, con GitHub Actions seleccionado como origen de Pages. Solo se publica `dist/client`; los archivos del servidor, la investigación de trabajo y las credenciales quedan fuera del artefacto. La portada española está en `/` y la inglesa en `/en/`.
 

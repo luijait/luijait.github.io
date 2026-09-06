@@ -2,6 +2,7 @@
 import { useLocale } from '@/components/locale';
 import { useEffect, useState } from 'react';
 import { ArrowUpRight } from 'lucide-react';
+import { ResearchAtlas } from '@/components/research-atlas';
 import { Sculpture } from '@/components/sculpture';
 import {
   Accordion,
@@ -79,6 +80,7 @@ export default function Research() {
               <ArrowUpRight size={18} />
             </CaseReader>
           </div>
+          <ResearchAtlas />
           <nav
             className="research-index"
             aria-label={
