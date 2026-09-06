@@ -21,7 +21,7 @@ const newsreader = Newsreader({
 export const spanishMetadata: Metadata = {
   metadataBase: new URL(
     process.env.DEPLOY_TARGET === 'github'
-      ? 'https://luijait.github.io'
+      ? 'https://luijait.es'
       : 'https://luijait.luis-javier38024.chatgpt.site',
   ),
   title: 'Luijait — IA en TryHackMe · Hace falta entender',
