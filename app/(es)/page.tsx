@@ -120,7 +120,7 @@ export default function Home() {
                   </h3>
                   <p>
                     {t(
-                      'Una infraestructura abierta y siete trabajos en coautoría para investigar IA aplicada a ciberseguridad.',
+                      'Una infraestructura abierta para investigar y evaluar IA aplicada a ciberseguridad, desarrollada en equipo.',
                     )}
                   </p>
                   <CaseReader caseId="cai">
@@ -161,7 +161,7 @@ export default function Home() {
                   </h3>
                   <p>
                     {t(
-                      'Una aplicación para compartir pantalla sin dejarlo todo a la vista.',
+                      'Una aplicación para ocultar texto al compartir la pantalla completa de macOS. La captura de una ventana individual puede omitir la capa de ocultación.',
                     )}
                   </p>
                   <CaseReader caseId="blurtain">
@@ -260,7 +260,7 @@ export default function Home() {
             <a
               href={path('/investigacion')}
               className="research-number"
-              aria-label={t('Explorar siete trabajos en coautoría')}
+              aria-label={t('Explorar las publicaciones y sus versiones')}
             >
               07<span>↗</span>
             </a>
@@ -276,7 +276,9 @@ export default function Home() {
               <p>
                 {t('CAI, evaluación, formación, estrategia.')}
                 <br />
-                {t('Siete trabajos conectados, en coautoría.')}
+                {t(
+                  'Siete trabajos en coautoría; uno de ellos, en sus versiones v1–v2.',
+                )}
               </p>
               <a href={path('/investigacion')} className="ink-link">
                 {t('Entrar en la investigación')}

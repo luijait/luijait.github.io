@@ -115,7 +115,7 @@ export default function Archive() {
               </div>
               <div className="archive-note">
                 {t(
-                  'Cada enlace abre un pasaje seleccionado. Puedes volver al inicio del vídeo para ver la conversación completa.',
+                  'Los enlaces abren la conversación o un pasaje seleccionado. Puedes volver al inicio del vídeo para verla completa.',
                 )}
               </div>
             </TabsContent>

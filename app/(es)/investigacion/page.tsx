@@ -44,7 +44,7 @@ export default function Research() {
       <main id="contenido">
         <section className="inner-hero research-hero shell">
           <span className="kicker">
-            {t('2025—2026 / Siete preprints en coautoría')}
+            {t('2025—2026 / Preprints y trabajo en equipo')}
           </span>
           <div className="research-hero-layout">
             <div>
@@ -72,7 +72,7 @@ export default function Research() {
             <span className="kicker">CAI / Alias Robotics</span>
             <p>
               {t(
-                'Soy coautor de estos siete trabajos, desarrollados con el equipo de Alias Robotics. Parten de CAI y amplían la investigación hacia formación, evaluación y estrategia.',
+                'Soy coautor de estos siete trabajos con el equipo de Alias Robotics. En el último, mi coautoría corresponde a las versiones v1–v2, enlazadas y señaladas en su ficha. La línea parte de CAI y se extiende hacia formación, evaluación y estrategia.',
               )}
             </p>
             <CaseReader caseId="cai" className="ink-button">
@@ -119,6 +119,7 @@ export default function Research() {
                   <span className="publication-name">
                     <strong>{paper.short}</strong>
                     <span>{paper.question}</span>
+                    {paper.authorship && <span>{paper.authorship}</span>}
                   </span>
                   <span className="publication-date">{paper.date}</span>
                 </AccordionTrigger>
@@ -130,11 +131,13 @@ export default function Research() {
                     </span>
                     <h2>{paper.title}</h2>
                     <p>{paper.description}</p>
+                    {paper.versionNote && <p>{paper.versionNote}</p>}
                     <OutLink
-                      href={`https://arxiv.org/abs/${paper.id}`}
+                      href={`https://arxiv.org/abs/${paper.id}${paper.version ?? ''}`}
                       className="ink-link"
                     >
                       {t('Leer en arXiv')}
+                      {paper.version && ` · ${paper.version}`}
                     </OutLink>
                   </div>
                 </AccordionContent>
@@ -148,7 +151,15 @@ export default function Research() {
                 'CAI cuenta también con una versión vinculada al taller AICS 2026, asociado a AAAI. Una misma investigación en otro espacio de intercambio.',
               )}
             </p>
-            <OutLink href="https://aics.site/">AICS 2026</OutLink>
+            <div>
+              <OutLink href="https://aics.site/AICS2026/AICSProgram2026.pdf">
+                AICS 2026
+              </OutLink>
+              <br />
+              <OutLink href="https://pinzger.github.io/papers/Vilches2026-CAI.pdf">
+                CAI · PDF
+              </OutLink>
+            </div>
           </div>
           <a href={path('/archivo')} className="next-chapter">
             <span>

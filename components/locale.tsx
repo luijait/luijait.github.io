@@ -60,7 +60,7 @@ const portraitText = [
   },
   {
     label: 'Around here, I’m Luija.',
-    detail: 'Current profile',
+    detail: 'Profile viewed in 2026',
     alt: 'Luis’s current X profile portrait, checked in September 2026.',
   },
 ];

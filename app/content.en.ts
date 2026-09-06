@@ -16,7 +16,7 @@ const caseText = [
       {
         label: '02 / Working together',
         title: 'One research direction, several perspectives',
-        text: 'At Alias Robotics I worked on CAI and coauthored seven papers in this research line. The work grew from the system into new questions: how to help people use it, how to evaluate it, and what changes when strategy comes into play. CAIBench organizes evaluations of individual skills and integrated tasks.',
+        text: 'At Alias Robotics I worked on CAI and coauthored seven papers in this research line, one of them in versions v1–v2. The work grew from the system into new questions: how to help people use it, how to evaluate it, and what changes when strategy comes into play. CAIBench organizes evaluations of individual skills and integrated tasks.',
       },
       {
         label: '03 / What interests me',
@@ -34,7 +34,7 @@ const caseText = [
     category: 'Machine learning · Open models',
     title: 'From fine-tuning to open weights. From model to product.',
     intro:
-      'I was cofounder and CTO of 0dAI and am the author of its open models: work with Mistral and Mixtral, quantized variants and Hugging Face releases as luijait.',
+      'I was cofounder and CTO of 0dAI and am an author of its open models: work with Mistral and Mixtral, quantized variants and Hugging Face releases as luijait.',
     role: 'Cofounder and CTO · Author of the open 0dAI models',
     chapters: [
       {
@@ -45,7 +45,7 @@ const caseText = [
       {
         label: '02 / My contribution',
         title: 'Building the models and leading the technical work',
-        text: 'I am the author of the open models published by 0dAI as luijait: 0dAI-7B, the 7.5B-v2 family with 4 and 8 bpw variants, and 0dAI-8x7b-0761. Built on Mistral and Mixtral, the work includes fine-tuning, iteration with DPO and quantization. The cards acknowledge Omega AI infrastructure, and the public history documents my releases. As cofounder and CTO, I also worked on technical direction and Zerodapi.',
+        text: 'I am an author of the open models published by 0dAI as luijait: 0dAI-7B, the 7.5B-v2 family with 4 and 8 bpw variants, and 0dAI-8x7b-0761. Built on Mistral and Mixtral, the work includes fine-tuning, iteration with DPO and quantization. The cards acknowledge the work of the 0dAI team and Omega AI infrastructure; the public history documents my releases. As cofounder and CTO, I also worked on technical direction and Zerodapi.',
       },
       {
         label: '03 / Beyond the prototype',
@@ -106,7 +106,7 @@ const caseText = [
       {
         label: '01 / The annoyance',
         title: 'Not everything belongs on screen',
-        text: 'You share your screen on a call or post a picture of your desktop, and something you did not mean to show slips into view. It happened to me with terminals, work paths and open conversations. Blurtain lets me hide those areas while keeping the important part visible.',
+        text: 'You share your screen on a call or post a picture of your desktop, and something you did not mean to show slips into view. It happened to me with terminals, work paths and open conversations. Blurtain hides text when sharing the full macOS display. Capturing an individual window may omit the masking overlay.',
       },
       {
         label: '02 / The scale',
@@ -134,7 +134,7 @@ export const cases = spanish.cases.map((item, i) => ({
 
 const chapterText = [
   {
-    era: '2012—2020',
+    era: 'Childhood and adolescence',
     title: 'From my sister’s PC to a notebook full of C.',
     paragraphs: [
       'I am from Villanueva del Arzobispo, Jaén. I wanted to make video games and understand how a small screen could hold an entire world. One of my first obsessions was getting unlimited coins in Facebook games. I even booted Windows from a USB drive on my sister’s PC, trying to get around permission restrictions so I could install Cheat Engine.',
@@ -168,7 +168,7 @@ const chapterText = [
     title: 'When a question becomes a product.',
     paragraphs: [
       'At Omega AI, a practical security need opened the path to 0dAI. With Omega and the team, we went from discussing an idea to building a prototype and a service. I was cofounder and CTO, and also worked on its development.',
-      'I am also the author of the open 0dAI models published on Hugging Face as luijait: fine-tuning on Mistral and Mixtral, iteration with DPO and quantized variants. That machine learning work was as central as the product experience. Users changed priorities and brought decisions about infrastructure, models and experience. That chapter gave me a lot of questions about what it means to bring technology into real use.',
+      'I am also an author of the open 0dAI models published on Hugging Face as luijait: fine-tuning on Mistral and Mixtral, iteration with DPO and quantized variants. That machine learning work was as central as the product experience. Users changed priorities and brought decisions about infrastructure, models and experience. That chapter gave me a lot of questions about what it means to bring technology into real use.',
     ],
     source: 'The origin of 0dAI, told with Omega',
   },
@@ -177,7 +177,7 @@ const chapterText = [
     title: 'A team to keep exploring with.',
     paragraphs: [
       'My time at Alias Robotics let me continue bringing artificial intelligence and cybersecurity together with a research team. Conversations with Víctor and other members of the team were part of that transition.',
-      'CAI opened a research direction that expanded into education, evaluation, specialized settings and strategy. I coauthored seven papers published on arXiv between April 2025 and January 2026. Reading, implementing and testing ideas were central to the method.',
+      'CAI opened a research direction that expanded into education, evaluation, specialized settings and strategy. I coauthored seven papers published on arXiv between April 2025 and January 2026; for the last one, my coauthorship applies to versions v1–v2. Reading, implementing and testing ideas were central to the method.',
     ],
     source: 'The team and the method, on xHubAI',
   },
@@ -185,7 +185,7 @@ const chapterText = [
     era: 'Along the way',
     title: 'Sharing what I am learning.',
     paragraphs: [
-      'Speaking and writing have accompanied the technical work: HACKÉN, AiBirras, Morteruelo, the CAI article on Deep Hacking, and a session with students at IES Virgen del Carmen in May 2025. A different audience calls for a different explanation.',
+      'Speaking and writing have accompanied the technical work: HACKÉN, AiBirras, a joint presentation at Morteruelo, the CAI article on Deep Hacking, and a session with students at IES Virgen del Carmen in May 2025. A different audience calls for a different explanation.',
       'I also serve on the BLISS Expert Board. I want knowledge to travel between research, building and learning. Explaining something forces you to organize what you know and recognize what you are still trying to understand.',
     ],
     source: 'The session at IES Virgen del Carmen',
@@ -253,6 +253,9 @@ const paperText = [
   },
   {
     short: 'Where the research could go',
+    authorship: 'Coauthor of v1–v2',
+    versionNote:
+      'My coauthorship applies to versions v1–v2; I am not listed as an author in v3. The date shown is the first publication date, and the link opens v2.',
     question: 'What role should human judgment and oversight play?',
     description:
       'A proposed direction for the evolution of AI in cybersecurity. It should be read as a research proposal, with its assumptions and conditions.',
@@ -321,7 +324,7 @@ const experimentText = [
   },
   {
     kind: 'Go · Networking',
-    text: 'My networking chapter, written in Go: host discovery and a custom parser to explore how systems communicate.',
+    text: 'A Go project I contributed to: host discovery and a parser to explore how systems communicate.',
   },
 ];
 export const experiments = spanish.experiments.map((item, i) => ({
@@ -330,8 +333,8 @@ export const experiments = spanish.experiments.map((item, i) => ({
 }));
 
 const writingTitles = [
-  'CAI: AI applied to cybersecurity',
-  'Quantizing AI: from your GPU to your pocket',
+  'CAI, the future of AI in cybersecurity',
+  'Quantizing AI: from the GPU to your pocket. GGUF and EXL2',
   'Can Devin hack and solve CTFs?',
 ];
 export const writings = spanish.writings.map((item, i) => ({

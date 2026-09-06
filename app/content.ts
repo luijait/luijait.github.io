@@ -17,7 +17,7 @@ export const cases = [
       {
         label: '02 / El trabajo compartido',
         title: 'Una línea de investigación, varias perspectivas',
-        text: 'En Alias Robotics trabajé en CAI y soy coautor de siete papers de esta línea. El trabajo fue creciendo desde el sistema hacia nuevas preguntas: cómo formar a quienes lo utilizan, cómo evaluarlo y qué cambia al introducir estrategia. CAIBench organiza evaluaciones de habilidades aisladas y tareas integradas.',
+        text: 'En Alias Robotics trabajé en CAI y soy coautor de siete trabajos de esta línea, uno de ellos en sus versiones v1–v2. El trabajo fue creciendo desde el sistema hacia nuevas preguntas: cómo formar a quienes lo utilizan, cómo evaluarlo y qué cambia al introducir estrategia. CAIBench organiza evaluaciones de habilidades aisladas y tareas integradas.',
       },
       {
         label: '03 / Lo que me interesa',
@@ -58,7 +58,7 @@ export const cases = [
       {
         label: '02 / Mi aportación',
         title: 'Construir los modelos y dirigir la parte técnica',
-        text: 'Soy autor de los modelos abiertos publicados por 0dAI como luijait: 0dAI-7B, la familia 7.5B-v2 con variantes cuantizadas a 4 y 8 bpw, y 0dAI-8x7b-0761. El trabajo parte de Mistral y Mixtral e incluye fine-tuning, iteración con DPO y cuantización. Las fichas reconocen la infraestructura de Omega AI, y el historial público documenta mis publicaciones. Como cofundador y CTO también trabajé en la dirección técnica y en Zerodapi.',
+        text: 'Soy autor de los modelos abiertos publicados por 0dAI como luijait: 0dAI-7B, la familia 7.5B-v2 con variantes cuantizadas a 4 y 8 bpw, y 0dAI-8x7b-0761. El trabajo parte de Mistral y Mixtral e incluye fine-tuning, iteración con DPO y cuantización. Las fichas reconocen el trabajo del equipo de 0dAI y la infraestructura de Omega AI; el historial público documenta mis publicaciones. Como cofundador y CTO también trabajé en la dirección técnica y en Zerodapi.',
       },
       {
         label: '03 / Después del prototipo',
@@ -148,7 +148,7 @@ export const cases = [
       {
         label: '01 / La molestia',
         title: 'No todo tiene que salir en pantalla',
-        text: 'Compartes pantalla en una llamada o publicas una foto del escritorio y se cuela algo que no querías enseñar. Me pasaba con la terminal, rutas de trabajo o conversaciones abiertas. Blurtain nace para poder ocultar esas zonas sin dejar de mostrar lo que importa.',
+        text: 'Compartes pantalla en una llamada o publicas una foto del escritorio y se cuela algo que no querías enseñar. Me pasaba con la terminal, rutas de trabajo o conversaciones abiertas. Blurtain nace para ocultar texto al compartir la pantalla completa de macOS. La captura de una ventana individual puede no incluir la capa de ocultación.',
       },
       {
         label: '02 / La escala',
@@ -176,7 +176,7 @@ export const cases = [
 
 export const chapters = [
   {
-    era: '2012—2020',
+    era: 'Infancia y adolescencia',
     title: 'Del PC de mi hermana a una libreta llena de C.',
     paragraphs: [
       'Soy de Villanueva del Arzobispo, Jaén. Quería hacer videojuegos y entender cómo una pequeña pantalla podía contener un mundo. Una de mis primeras obsesiones fue conseguir monedas ilimitadas en los juegos de Facebook: llegué a arrancar Windows desde un USB en el PC de mi hermana, intentando sortear las restricciones de permisos para instalar Cheat Engine.',
@@ -223,7 +223,7 @@ export const chapters = [
     title: 'Un equipo con el que seguir profundizando.',
     paragraphs: [
       'Mi paso por Alias Robotics me permitió continuar la combinación de inteligencia artificial y ciberseguridad con un equipo de investigación. Las conversaciones con Víctor y con otras personas del equipo forman parte de esa transición.',
-      'CAI abrió una línea que después se extendió hacia formación, evaluación, escenarios especializados y estrategia. Soy coautor de siete trabajos publicados en arXiv entre abril de 2025 y enero de 2026. Leer, implementar y contrastar ideas fue parte central del método.',
+      'CAI abrió una línea que después se extendió hacia formación, evaluación, escenarios especializados y estrategia. Soy coautor de siete trabajos publicados en arXiv entre abril de 2025 y enero de 2026; en el último, mi coautoría corresponde a las versiones v1–v2. Leer, implementar y contrastar ideas fue parte central del método.',
     ],
     source: 'El equipo y el método, en xHubAI',
     url: 'https://www.youtube.com/watch?v=KDZXVnKsLnM&t=614s',
@@ -232,7 +232,7 @@ export const chapters = [
     era: 'A lo largo del camino',
     title: 'Compartir lo que voy entendiendo.',
     paragraphs: [
-      'Las charlas y la escritura han acompañado al trabajo técnico: HACKÉN, AiBirras, Morteruelo, el artículo sobre CAI en Deep Hacking y una sesión con estudiantes de IES Virgen del Carmen en mayo de 2025. Cambia el público y cambia la manera de explicar.',
+      'Las charlas y la escritura han acompañado al trabajo técnico: HACKÉN, AiBirras, una presentación conjunta en Morteruelo, el artículo sobre CAI en Deep Hacking y una sesión con estudiantes de IES Virgen del Carmen en mayo de 2025. Cambia el público y cambia la manera de explicar.',
       'También participo en el Expert Board de BLISS. Me interesa que el conocimiento circule entre investigación, construcción y aprendizaje: una explicación obliga a ordenar lo que sabes y a reconocer lo que todavía estás intentando comprender.',
     ],
     source: 'La sesión en IES Virgen del Carmen',
@@ -321,6 +321,10 @@ export const papers = [
   },
   {
     id: '2601.14614',
+    version: 'v2',
+    authorship: 'Coautor de v1–v2',
+    versionNote:
+      'Mi coautoría corresponde a las versiones v1–v2; no figuro en la lista de autores de v3. La fecha indicada es la de primera publicación y el enlace abre v2.',
     date: '21.01.2026',
     short: 'Hacia dónde podría evolucionar',
     question: '¿Qué papel deberían tener el criterio y la supervisión humana?',
@@ -495,20 +499,20 @@ export const experiments = [
   {
     name: 'GONET Scanner',
     kind: 'Go · Redes',
-    text: 'Mi etapa de redes, escrita en Go: descubrimiento de equipos y un parser propio para explorar cómo se comunican los sistemas.',
+    text: 'Un proyecto en Go al que contribuí: descubrimiento de equipos y un parser para explorar cómo se comunican los sistemas.',
     url: 'https://github.com/luijait/GONET-Scanner',
   },
 ];
 
 export const writings = [
   {
-    title: 'CAI: IA aplicada a ciberseguridad',
+    title: 'CAI, el futuro de la IA en ciberseguridad',
     publisher: 'Deep Hacking',
     date: 'Mayo 2025',
     url: 'https://blog.deephacking.tech/es/posts/cai-ia-ciberseguridad/',
   },
   {
-    title: 'Cuantiza la IA: de tu GPU a tu bolsillo',
+    title: 'Cuantiza la IA: De la GPU a tu bolsillo. GGUF y EXL2',
     publisher: 'LinkedIn',
     date: 'Agosto 2024',
     url: 'https://www.linkedin.com/pulse/cuantiza-la-ia-de-gpu-tu-bolsillo-gguf-y-exl2-luis-javier-navarrete-v42nf',

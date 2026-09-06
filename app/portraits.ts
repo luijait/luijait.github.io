@@ -36,7 +36,7 @@ export const portraits = [
   {
     year: '2026',
     label: 'Por aquí, Luija.',
-    detail: 'Perfil actual',
+    detail: 'Perfil consultado en 2026',
     src: '/portraits/x-current.jpg',
     width: 400,
     height: 400,

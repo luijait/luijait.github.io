@@ -98,6 +98,9 @@ export function ResearchAtlas({ compact = false }: { compact?: boolean }) {
           <h3>{paper.question}</h3>
           {!compact && <p>{paper.description}</p>}
           <span className="atlas-paper-name">{paper.short}</span>
+          {paper.authorship && (
+            <span className="atlas-paper-name">{paper.authorship}</span>
+          )}
         </div>
         <div className="atlas-detail-bottom">
           <a href={path(`/investigacion#paper-${paper.id}`)}>

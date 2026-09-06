@@ -37,8 +37,8 @@ export function OpenModels() {
           </span>
           <p>
             {es
-              ? 'Soy el autor de los modelos abiertos de 0dAI publicados como luijait. Fine-tuning, iteración con DPO y variantes cuantizadas, trabajando sobre Mistral y Mixtral con la infraestructura de Omega AI.'
-              : 'I am the author of the open 0dAI models published as luijait. Fine-tuning, iteration with DPO and quantized variants, built on Mistral and Mixtral with Omega AI infrastructure.'}
+              ? 'Soy autor de los modelos abiertos de 0dAI publicados como luijait. Mi trabajo incluye fine-tuning, DPO y variantes cuantizadas sobre Mistral y Mixtral, dentro del equipo de 0dAI y con infraestructura de Omega AI.'
+              : 'I am an author of the open 0dAI models published as luijait. My work includes fine-tuning, DPO and quantized variants on Mistral and Mixtral, as part of the 0dAI team and with Omega AI infrastructure.'}
           </p>
         </div>
       </div>
