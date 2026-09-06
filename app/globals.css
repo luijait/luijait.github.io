@@ -233,6 +233,30 @@ button:focus-visible {
   gap: 22px;
   flex-shrink: 0;
 }
+.social-links {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+.social-links a {
+  display: grid;
+  place-items: center;
+  min-height: 38px;
+  min-width: 32px;
+  color: var(--muted-foreground);
+  border-radius: 3px;
+  transition: color 0.2s;
+}
+.social-links svg {
+  height: 16px;
+  width: 16px;
+}
+.social-links a:hover {
+  color: var(--red);
+}
+.social-links a:focus-visible {
+  outline: 1px solid var(--red);
+}
 .language-links {
   display: flex;
   align-items: center;
